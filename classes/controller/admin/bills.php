@@ -81,7 +81,8 @@ class Controller_Admin_Bills extends Admincontroller {
 					// End of Create the transaction
 
 					// Make the PDF
-					shell_exec('wkhtmltopdf http://larvit.se/bills/bill?billnr='.$bill_id.' pdf/bill_'.$bill_id.'.pdf');
+
+					shell_exec('wkhtmltopdf '.$_SERVER['SERVER_NAME'].URL::site('bill?billnr='.$bill_id).' '.APPPATH.'user_content/pdf/bill_'.$bill_id.'.pdf');
 				}
 				else
 				{
