@@ -56,7 +56,6 @@ class Controller_Admin_Employees extends Admincontroller {
       $employee = new Employee();
 
       $employee->set($post->as_array());
-     // $firstname = $post->get('firstname');
       $this->add_message($post->get('firstname') . ' was added as employee');
 		}
 	}
