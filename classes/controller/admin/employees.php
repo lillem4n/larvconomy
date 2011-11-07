@@ -55,9 +55,9 @@ class Controller_Admin_Employees extends Admincontroller {
       $post->filter('trim');
       $employee = new Employee();
 
-      $employee->set($_POST);
-      $firstname = $post->get('firstname');
-      $this->add_message($firstname . ' was added as employee');
+      $employee->set($post->as_array());
+     // $firstname = $post->get('firstname');
+      $this->add_message($post->get('firstname') . ' was added as employee');
 		}
 	}
 
