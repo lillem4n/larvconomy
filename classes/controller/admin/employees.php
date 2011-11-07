@@ -51,12 +51,12 @@ class Controller_Admin_Employees extends Admincontroller {
 		else
 		{
      
-      $post = new Validation($_POST);
-      $post->filter('trim');
-      $employee = new Employee();
+    $post = new Validation($_POST);
+    $post->filter('trim');
+    $employee = new Employee();
 
-      $employee->set($post->as_array());
-      $this->add_message($post->get('firstname') . ' was added as employee');
+    $employee->set($post->as_array());
+    $this->add_message($post->get('firstname') . ' was added as employee');
 		}
 	}
 
