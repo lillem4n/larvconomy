@@ -6,9 +6,10 @@ class Model_Employee extends Model
 	private $id;
 	private $employee;
 
-	public function __construct($id)
+	public function __construct($id = FALSE)
 	{
 		parent::__construct();
+    if($id) {
 		$this->prepared_select = $this->pdo->prepare('SELECT * FROM employees WHERE id = ?');
 		$this->prepared_select->execute(array($id));
 		$this->id = $id;
@@ -17,7 +18,7 @@ class Model_Employee extends Model
 			throw new Kohana_Exception('Invalid employee ID');
 		}
 	}
-
+  }
 	public function get($detail = FALSE)
 	{
 		$current_year = date('Y', time());
@@ -42,12 +43,11 @@ class Model_Employee extends Model
 	}
 
 	public function set($array)
-	{
+	  {
+    if(isset($array['id'])) {
 		$columns = array_keys($this->employee);
 		unset($columns[0]); // Remove ID from the index
-
 		$sql = 'UPDATE employees SET ';
-
 		$counter = 0;
 		foreach ($array as $key => $value)
 		{
@@ -57,20 +57,33 @@ class Model_Employee extends Model
 				$counter++;
 			}
 		}
-
 		if ($counter > 0)
 		{
 			$sql = substr($sql, 0, strlen($sql) - 1);
 			$sql .= ' WHERE id = '.$this->pdo->quote($this->id);
-
 			$this->pdo->query($sql);
-
 			$this->prepared_select->execute(array($this->id));
 			$this->employee = $this->prepared_select->fetch(PDO::FETCH_ASSOC);
 		}
 
 		return TRUE;
 	}
-
-
+  else
+  {
+    $attr = "";
+    $values = "";
+    unset($array['create_employee']);
+   foreach($array AS $key => $value)
+   {
+        $attr .='`'. $key . "`,";
+        $values .= $this->pdo->quote($value) . ",";
+   }
+    $attr = substr($attr, 0, strlen($attr) - 1);
+    $values = substr($values, 0, strlen($values) - 1);
+    $query = "INSERT INTO employees ($attr) VALUES ($values)";
+    $this->pdo->query($query);
+    return TRUE;
+  }
+  return FALSE;
+}
 }
