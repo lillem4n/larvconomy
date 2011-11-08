@@ -6,10 +6,10 @@ class Model_Employee extends Model
 	private $id;
 	private $employee;
 
-	public function __construct($id = FALSE)
+	public function __construct($id)
 	{
 		parent::__construct();
-    if($id) {
+
 		$this->prepared_select = $this->pdo->prepare('SELECT * FROM employees WHERE id = ?');
 		$this->prepared_select->execute(array($id));
 		$this->id = $id;
@@ -18,7 +18,7 @@ class Model_Employee extends Model
 			throw new Kohana_Exception('Invalid employee ID');
 		}
 	}
-  }
+
 	public function get($detail = FALSE)
 	{
 		$current_year = date('Y', time());
@@ -42,14 +42,33 @@ class Model_Employee extends Model
 		else return $this->employee;
 	}
 
-	public function set($array)
-	  {
-    if(isset($array['id'])) {
+	public static function new_employee($data)
+	{
+		$pdo = Kohana_pdo::instance();
+
+		$columns = array();
+		foreach ($pdo->query('DESCRIBE employees')->fetchAll(PDO::FETCH_ASSOC) as $row)
+			if ($row['Field'] != 'id') $columns[] = $row['Field'];
+
+		foreach ($data as $field => $value)
+			if ( ! in_array($field, $columns)) unset($data[$field]);
+
+		$sql = 'INSERT INTO employees (`'.implode('`,`', array_keys($data)).'`) VALUES(';
+		foreach ($data as $field => $value) $sql .= $pdo->quote($value).',';
+		$sql = substr($sql, 0, strlen($sql) - 1).')';
+
+		$pdo->query($sql);
+
+		return $pdo->lastInsertId();
+	}
+
+	public function set($data)
+	{
 		$columns = array_keys($this->employee);
 		unset($columns[0]); // Remove ID from the index
 		$sql = 'UPDATE employees SET ';
 		$counter = 0;
-		foreach ($array as $key => $value)
+		foreach ($data as $key => $value)
 		{
 			if (in_array($key, $columns))
 			{
@@ -68,22 +87,5 @@ class Model_Employee extends Model
 
 		return TRUE;
 	}
-  else
-  {
-    $attr = "";
-    $values = "";
-    unset($array['create_employee']);
-   foreach($array AS $key => $value)
-   {
-        $attr .='`'. $key . "`,";
-        $values .= $this->pdo->quote($value) . ",";
-   }
-    $attr = substr($attr, 0, strlen($attr) - 1);
-    $values = substr($values, 0, strlen($values) - 1);
-    $query = "INSERT INTO employees ($attr) VALUES ($values)";
-    $this->pdo->query($query);
-    return TRUE;
-  }
-  return FALSE;
-}
+
 }

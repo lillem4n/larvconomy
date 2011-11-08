@@ -48,16 +48,15 @@ class Controller_Admin_Employees extends Admincontroller {
 			);
 			xml::to_XML($employee->get(), $this->xml_content->appendChild($this->dom->createElement('employee')), NULL, 'id');
 		}
-		else
+		elseif (count($_POST))
 		{
-     
-    $post = new Validation($_POST);
-    $post->filter('trim');
-    $employee = new Employee();
+			$post = new Validation($_POST);
+			$post->filter('trim');
+			$employee_id = Employee::new_employee($post->as_array());
 
-    $employee->set($post->as_array());
-    $this->add_message($post->get('firstname') . ' was added as employee');
+			$this->add_message($post->get('firstname').' (ID: '.$employee_id.') was added as employee');
 		}
+		else $this->redirect();
 	}
 
 }
