@@ -2,12 +2,12 @@
 
 Class Mail {
 
-  protected $to = "";
-  protected $from = Array();
-  protected $subject = "";
-  protected $message = "";
-  protected $attachment = "";
-  protected $attname = "";
+  private $to = "";
+  private $from = Array();
+  private $subject = "";
+  private $message = "";
+  private $attachment = "";
+  private $attname = "";
 
   public function __construct()
   {
