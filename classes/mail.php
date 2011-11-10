@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-Class Mail {
+class Mail extends Controller {
 
   private $to = "";
   private $from = Array();
@@ -37,8 +37,8 @@ Class Mail {
 
   public function attachment($fileURL)
   {
-    $file = fopen($fileURL, ‘rb’);
-    $fileContent = fread($file, filesize($fileURL));
+    $file = fopen($fileURL, 'rb');
+    $fileContent = stream_get_contents($file);
     fclose($file);
 
     $this->attachment = $fileContent;
@@ -47,7 +47,8 @@ Class Mail {
   
   public function send()
   {
-      $header = 'from:' . $this->from['name'] . '<' . $this->from['email'] . '>' ;
+      $header = 'From: "'.$this->from['name'].'" <'.$this->from['email'].'>\r\n';
+      $header .= 'Reply-To: '.$this->from['email'].'\r\n';
       $header .= 'Content-Type: text/plain; charset=UTF-8\r\n' .
                  'Content-Transfer-Encoding: base64\r\n\r\n'; 
 
@@ -57,7 +58,7 @@ Class Mail {
         $semi_rand = md5(time());
         $mime_boundary = '==Multipart_Boundary_x'.$semi_rand.'x';
 
-        $headers .= '\nMIME-Version: 1.0\n' .
+        $header .= '\nMIME-Version: 1.0\n' .
                     'Content-Type: multipart/mixed;\n' .
                     'boundary=" '. $mime_boundary .'"';
 
@@ -71,7 +72,7 @@ Class Mail {
                     $this->attachment . '\n\n' .
                     '-'.$mime_boundary.'-\n';
       }
-      if( mail($this->to,$this->subject, ,$this->message, $headers) )
+      if( mail($this->to,$this->subject, $this->message, $header) )
       {
         return TRUE; 
       }
