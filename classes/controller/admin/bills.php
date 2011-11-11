@@ -14,6 +14,32 @@ class Controller_Admin_Bills extends Admincontroller {
 		$this->xml_content_bills = $this->xml_content->appendChild($this->dom->createElement('bills'));
 		xml::to_XML(Bills::get(), $this->xml_content_bills, 'bill', 'id');
 	}
+ 
+  public function action_email()
+  {
+    //Get the bill data.
+    $bill = New Bill($_GET['invoice']);
+    $costumer = $bill->get_customer_data('costumer_email'); 
+    
+    $mail = new Mail();
+    $mail->from('Larv IT AB', 'info@larvit.se');
+    $mail->to($costumer);
+    $mail->subject('Invoice from Larv IT');
+    $mail->content('Invoice sent');
+    $mail->attachment(url::base('http',FALSE).'/user_content/pdf/bill_'.$_GET['invoice'].'.pdf');
+
+    if($mail->send())
+    {
+      die('Email was sent and costumer = '.$costumer);
+    }
+    else
+    {
+      die('email was not sent and costumer = '.$costumer);
+    }
+
+    // if email sent then update bills.invoice_sent with CURRENT_TIMESTAMP 
+  }
+
 
 	public function action_new_bill()
 	{
@@ -109,5 +135,6 @@ class Controller_Admin_Bills extends Admincontroller {
 		$bill->pay($pay_date);
 		$this->redirect();
 	}
+ 
 
 }
