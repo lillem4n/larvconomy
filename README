@@ -1,3 +1,5 @@
 Open Source Economy Application
 
-This application is ran as a module to Kohana 3.1 and requires the pajas module.
+This application is ran as a module to Kohana 3.2 and requires:
+ * Pajas https://github.com/lillem4n/kohana-module-pajas
+ * Mail https://github.com/shadowhand/email
