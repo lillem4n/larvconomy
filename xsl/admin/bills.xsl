@@ -76,7 +76,7 @@
 							<xsl:value-of select="format-number(number(sum), '###,###,###.00')" />
 							<xsl:text> SEK</xsl:text>
 						</td>
-						<td><a href="http://{root/meta/domain}{/root/meta/base}{concat('user_content/pdf/bill_',@id,'.pdf')}">Link</a></td>
+						<td><a href="http://{/root/meta/domain}{/root/meta/base}{concat('user_content/pdf/bill_',@id,'.pdf')}">Link</a></td>
 						<td>
 							<xsl:text>[</xsl:text><a href="http://{/root/meta/domain}{/root/meta/base}bill?billnr={@id}">Details</a><xsl:text>]</xsl:text>
 							<xsl:if test="paid_date = ''">
