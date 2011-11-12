@@ -12,8 +12,8 @@ class Controller_Admin_Wages extends Admincontroller {
 	public function action_index()
 	{
 		// Period-stuff (Needs to be before $_POST-handling)
-			$current_year  = date('Y', time());
-			$current_month = date('m', time());
+			$year  = $start_year  = $current_year  = date('Y', time());
+			$month = $start_month = $current_month = date('m', time());
 
 			foreach (Transactions::get(array('description' => 'Salary payout')) as $transaction)
 			{
