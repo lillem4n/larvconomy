@@ -13,43 +13,36 @@ class Controller_Admin_Bills extends Admincontroller {
 	{
 		$this->xml_content_bills = $this->xml_content->appendChild($this->dom->createElement('bills'));
 		xml::to_XML(Bills::get(), $this->xml_content_bills, 'bill', 'id');
+
+		$session = Session::instance();
+		if ($message = $session->get_once('message'))
+			$this->add_message($message);
+		elseif ($error = $session->get_once('error'))
+			$this->add_error($error);
 	}
- 
-  public function action_email()
-  {
-    //Get the bill data.
-    $bill = New Bill($_GET['invoice']);
-    $costumer = $bill->get_customer_data('costumer_email'); 
-    
-    $mail = new Mail();
-    $mail->from('Larv IT AB', 'info@larvit.se');
-    $mail->to($costumer);
-    $mail->subject('Invoice from Larv IT');
-    $mail->content('Invoice sent');
-    $mail->attachment(url::base('http',FALSE).'/user_content/pdf/bill_'.$_GET['invoice'].'.pdf');
 
-    if($mail->send())
-    {
-      die('Email was sent and costumer = '.$costumer);
-    }
-    else
-    {
-      die('email was not sent and costumer = '.$costumer);
-    }
+	public function action_email()
+	{
+		$session = Session::instance();
+		$bill_id = $this->request->param('options');
+		$bill    = new Bill($bill_id);
+		if ($bill->send_mail())
+			$session->set('message', 'Mail sent for bill #'.$bill_id);
+		else
+			$session->set('error', 'Mail for bill #'.$bill_id.' failed!');
 
-    // if email sent then update bills.invoice_sent with CURRENT_TIMESTAMP 
-  }
+		$this->redirect();
+
+		// if email sent then update bills.invoice_sent with CURRENT_TIMESTAMP
+	}
 
 
-	public function action_new_bill()
+	public function action_bill()
 	{
 		$this->xml_content_customers = $this->xml_content->appendChild($this->dom->createElement('customers'));
 		xml::to_XML(Customers::get_customers(), $this->xml_content_customers, 'customer', 'id');
 
-		if ( ! isset($_SESSION['bills']['items']))
-		{
-			$_SESSION['bills']['items']['1item'] = 1;
-		}
+		if ( ! isset($_SESSION['bills']['items'])) $_SESSION['bills']['items']['1item'] = 1;
 
 		if (count($_POST))
 		{
@@ -106,8 +99,10 @@ class Controller_Admin_Bills extends Admincontroller {
 					$transaction = new Transaction(NULL, $data);
 					// End of Create the transaction
 
-					// Make the PDF
+					// Set new default due date
+					$this->set_formdata(array('due_date' => date('Y-m-d', time() + 20*24*60*60)));
 
+					// Make the PDF
 					shell_exec('wkhtmltopdf '.$_SERVER['SERVER_NAME'].URL::site('bill?billnr='.$bill_id).' '.APPPATH.'user_content/pdf/bill_'.$bill_id.'.pdf');
 				}
 				else
@@ -137,6 +132,6 @@ class Controller_Admin_Bills extends Admincontroller {
 		$bill->pay($pay_date);
 		$this->redirect();
 	}
- 
+
 
 }

@@ -23,7 +23,7 @@ class Controller_Admin_Customers extends Admincontroller {
 
 			if ($post->validate())
 			{
-				$customer_id = Customer::add_customer($post->as_array());
+				$customer_id = Customer::add($post->as_array());
 				$this->add_message('Customer '.$post->get('name').' added with ID #'.$customer_id);
 			}
 			else
@@ -42,7 +42,7 @@ class Controller_Admin_Customers extends Admincontroller {
 
 		$customer_model = new Customer($customer_id);
 
-		xml::to_XML(array('customer' => $customer_model->get_customer_data()), $this->xml_content, NULL, 'id');
+		xml::to_XML(array('customer' => $customer_model->get()), $this->xml_content, NULL, 'id');
 
 		if (count($_POST))
 		{
@@ -51,12 +51,12 @@ class Controller_Admin_Customers extends Admincontroller {
 
 			if ($post->validate())
 			{
-				$customer_model->set_customer_data($post->as_array());
+				$customer_model->set($post->as_array());
 				$this->add_message('Customer "'.$post->get('name').'" updated');
 			}
 		}
 
-		$this->set_formdata($customer_model->get_customer_data());
+		$this->set_formdata($customer_model->get());
 	}
 
 }

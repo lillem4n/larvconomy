@@ -18,6 +18,14 @@ class Model_Bill extends Model
 		$this->data['items'] = $this->pdo->query('SELECT * FROM bills_items WHERE bill_id = '.$this->id.' ORDER BY item_id')->fetchAll(PDO::FETCH_ASSOC);
 	}
 
+	public function get($detail = FALSE)
+	{
+		if     ($detail == FALSE)            return $this->data;
+		elseif (isset($this->data[$detail])) return $this->data[$detail];
+
+		return FALSE;
+	}
+
 	/**
 	 * Add a bill
 	 *
@@ -51,14 +59,14 @@ class Model_Bill extends Model
 		self::$prepared_insert->execute(array(
 			date('Y-m-d', $due_date),
 			intval($customer_id),
-			$customer_model->get_customer_data('name'),
-			$customer_model->get_customer_data('orgnr'),
-			$customer_model->get_customer_data('contact'),
-			$customer_model->get_customer_data('tel'),
-			$customer_model->get_customer_data('email'),
-			$customer_model->get_customer_data('street'),
-			$customer_model->get_customer_data('zip'),
-			$customer_model->get_customer_data('city'),
+			$customer_model->get('name'),
+			$customer_model->get('orgnr'),
+			$customer_model->get('contact'),
+			$customer_model->get('tel'),
+			$customer_model->get('email'),
+			$customer_model->get('street'),
+			$customer_model->get('zip'),
+			$customer_model->get('city'),
 			$comment,
 			$contact
 		));
@@ -85,10 +93,31 @@ class Model_Bill extends Model
 	{
 		if ($date === FALSE) $date = date('Y-m-d', time());
 
-		$this->pdo->query('UPDATE bills        SET paid_date     = \''.date('Y-m-d', strtotime($date)).'\' WHERE id          = '.$this->id);
-		$this->pdo->query('UPDATE transactions SET transfer_date = \''.date('Y-m-d', strtotime($date)).'\' WHERE description = \'Bill '.$this->id.'\';');
+		$this->pdo->query('UPDATE bills        SET paid_date     = \''.date('Y-m-d', strtotime($date)).'\' WHERE id          = '.$this->pdo->quote($this->id));
+		$this->pdo->query('UPDATE transactions SET transfer_date = \''.date('Y-m-d', strtotime($date)).'\' WHERE description = \'Bill '.$this->pdo->quote($this->id).'\';');
 
 		return TRUE;
+	}
+
+	public function send_mail()
+	{
+		try
+		{
+			$email_response = (bool) Email::factory(Kohana::$config->load('larv.email.bill_subject'),Kohana::$config->load('larv.email.bill_message'))
+				->to($this->get('customer_email'))
+				->from(Kohana::$config->load('larv.email.from'), Kohana::$config->load('larv.email.from_name'))
+				->attach_file(APPPATH.'user_content/pdf/bill_'.$this->id.'.pdf')
+				->send($errors);
+		}
+		catch (Swift_RfcComplianceException $e)
+		{
+			// If the email address does not pass RFC Compliance
+			return FALSE;
+		}
+
+		if ($email_response) $this->pdo->query('UPDATE bills SET email_sent = CURRENT_TIMESTAMP() WHERE id = '.$this->pdo->quote($this->id));
+
+		return $email_response;
 	}
 
 }
