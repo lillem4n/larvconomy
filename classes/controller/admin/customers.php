@@ -36,8 +36,10 @@ class Controller_Admin_Customers extends Admincontroller {
 		}
 	}
 
-	public function action_edit_customer($customer_id)
+	public function action_edit_customer()
 	{
+		$customer_id    = $this->request->param('options');
+
 		$customer_model = new Customer($customer_id);
 
 		xml::to_XML(array('customer' => $customer_model->get_customer_data()), $this->xml_content, NULL, 'id');

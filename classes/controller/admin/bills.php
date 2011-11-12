@@ -101,8 +101,10 @@ class Controller_Admin_Bills extends Admincontroller {
 		xml::to_XML($_SESSION['bills'], $this->xml_content);
 	}
 
-	public function action_mark_as_paid($details)
+	public function action_mark_as_paid()
 	{
+		$details = $this->request->param('options');
+
 		list($bill_id, $pay_date) = explode('/', $details);
 
 		$bill = new bill($bill_id);

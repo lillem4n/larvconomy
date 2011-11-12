@@ -2,7 +2,7 @@
 if ( ! is_dir(APPPATH.'user_content/pdf')) mkdir(APPPATH.'user_content/pdf');
 
 $pdo         = Kohana_pdo::instance('default');
-$column_name = 'Tables_in_'.Kohana::config('pdo.default.database_name');
+$column_name = 'Tables_in_'.Kohana::$config->load('pdo.default.database_name');
 $columns     = $pdo->query('
 									SHOW TABLES
 									WHERE

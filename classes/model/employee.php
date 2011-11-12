@@ -29,7 +29,7 @@ class Model_Employee extends Model
 		$age                             = $current_year - $born_year;
 		$this->employee['soc_fee_level'] = 0; // Initial setting, will change if any matches are found further down
 
-		foreach (Kohana::config('larv.soc_fee_levels') as $level_data)
+		foreach (Kohana::$config->load('larv.soc_fee_levels') as $level_data)
 		{
 			if ($level_data['start_age'] <= $age && $level_data['end_age'] >= $age) $this->employee['soc_fee_level'] = $level_data['level'];
 		}

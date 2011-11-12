@@ -216,8 +216,6 @@ class Controller_Admin_Wages extends Admincontroller {
 				if (isset($errors['amount'])) $this->add_form_errors(array('amount'=>'Must be numbers ONLY'));
 
 			}
-
-
 		}
 	}
 
