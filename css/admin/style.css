@@ -281,11 +281,10 @@ div#loginbox
 			border-bottom:     1px solid #d4d4d4;
 		}
 
-		.contentwrap2 table tfoot td
+		.contentwrap2 table tfoot th
 		{
-			font-weight:       bold;
-			text-align:        left;
 			border-top:        1px solid #d4d4d4;
+			border-bottom:     none;
 		}
 
 		.contentwrap2 table .small_row

@@ -64,10 +64,10 @@
 			</thead>
 			<tfoot>
 				<tr>
-					<td colspan="4"></td>
-					<td class="right"><xsl:value-of select="format-number(number(sum(accounting/entry/sum)), '#,##0.00')" /></td>
-					<td class="right"><xsl:value-of select="format-number(number(sum(accounting/entry/vat)), '#,##0.00')" /></td>
-					<td colspan="3"></td>
+					<th colspan="4"></th>
+					<th class="right"><xsl:value-of select="format-number(number(sum(accounting/entry/sum)), '#,##0.00')" /></th>
+					<th class="right"><xsl:value-of select="format-number(number(sum(accounting/entry/vat)), '#,##0.00')" /></th>
+					<th colspan="3"></th>
 				</tr>
 			</tfoot>
 			<tbody>
