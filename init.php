@@ -18,7 +18,7 @@ if (count($columns) != 5)
 	$pdo->query('CREATE TABLE `bills` (
 	  `id` int(11) NOT NULL AUTO_INCREMENT,
 	  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	  `due_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+	  `due_date` timestamp NOT NULL DEFAULT \'0000-00-00 00:00:00\',
 	  `customer_id` int(10) unsigned NOT NULL,
 	  `customer_name` varchar(255) NOT NULL,
 	  `customer_orgnr` bigint(20) unsigned NOT NULL,
