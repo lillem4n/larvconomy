@@ -94,7 +94,7 @@ class Model_Bill extends Model
 		if ($date === FALSE) $date = date('Y-m-d', time());
 
 		$this->pdo->query('UPDATE bills        SET paid_date     = \''.date('Y-m-d', strtotime($date)).'\' WHERE id          = '.$this->pdo->quote($this->id));
-		$this->pdo->query('UPDATE transactions SET transfer_date = \''.date('Y-m-d', strtotime($date)).'\' WHERE description = \'Bill '.$this->pdo->quote($this->id).'\';');
+		$this->pdo->query('UPDATE transactions SET transfer_date = \''.date('Y-m-d', strtotime($date)).'\' WHERE description = \'Bill '.intval($this->id).'\';');
 
 		return TRUE;
 	}
