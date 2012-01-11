@@ -23,8 +23,11 @@ class Controller_Admin_Wages extends Admincontroller {
 			}
 
 			$periods = array();
-			while ($year <= $current_year && $month <= $current_month)
+			while (1 == 1)
 			{
+				if ($year > $current_year) break;
+				elseif ($year == $current_year && $month > $current_month) break;
+
 				$periods[$year.$month.'option'] = array(
 					'@value' => $year.'-'.$month,
 					$year.' '.date('F', mktime(0,0,0,$month,1))
@@ -37,6 +40,7 @@ class Controller_Admin_Wages extends Admincontroller {
 					$month = 1;
 				}
 			}
+
 			xml::to_XML($periods, $this->xml_content->appendChild($this->dom->createElement('periods')));
 
 			if ( ! isset($_GET['period']) || ! preg_match('/^\d{4}-\d{1,2}$/', $_GET['period']))
