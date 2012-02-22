@@ -145,6 +145,8 @@
 				<xsl:call-template name="form_line">
 					<xsl:with-param name="id" select="concat('qty_item_',.)" />
 					<xsl:with-param name="label" select="'Quantity:'" />
+					<xsl:with-param name="value" select="'1'" />
+
 				</xsl:call-template>
 
 				<p>---</p>
