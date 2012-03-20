@@ -11,6 +11,7 @@ class Controller_Admin_Bills extends Admincontroller {
 
 	public function action_index()
 	{
+
 		$this->xml_content_bills = $this->xml_content->appendChild($this->dom->createElement('bills'));
 		xml::to_XML(Bills::get(), $this->xml_content_bills, 'bill', 'id');
 
@@ -41,6 +42,17 @@ class Controller_Admin_Bills extends Admincontroller {
 	{
 		$this->xml_content_customers = $this->xml_content->appendChild($this->dom->createElement('customers'));
 		xml::to_XML(Customers::get_customers(), $this->xml_content_customers, 'customer', 'id');
+
+		$template = array();
+		foreach (glob(MODPATH.'larvconomy/xsl/bills/*') as $file)
+		{
+			$file_paths    = explode('/', $file);
+			$template_file = explode('.', end($file_paths));
+			$template[]    = reset($template_file);
+		}
+
+		$this->xml_content_bill_template = $this->xml_content->appendChild($this->dom->createElement('templates'));
+		xml::to_XML($template, $this->xml_content_bill_template, 'file');
 
 		if ( ! isset($_SESSION['bills']['items'])) $_SESSION['bills']['items']['1item'] = 1;
 
@@ -103,7 +115,8 @@ class Controller_Admin_Bills extends Admincontroller {
 					$this->set_formdata(array('due_date' => date('Y-m-d', time() + 20*24*60*60)));
 
 					// Make the PDF
-					shell_exec('wkhtmltopdf '.$_SERVER['SERVER_NAME'].URL::site('bill?billnr='.$bill_id).' '.APPPATH.'user_content/pdf/bill_'.$bill_id.'.pdf');
+					shell_exec('wkhtmltopdf --ignore-load-errors --password followthewhiterabbit --username neo "'.$_SERVER['SERVER_NAME'].URL::site('bill?billnr='.$bill_id.'&template='.$post->get('template')).'" "'.APPPATH.'user_content/pdf/bill_'.$bill_id.'.pdf"');
+
 				}
 				else
 				{

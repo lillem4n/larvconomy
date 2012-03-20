@@ -17,6 +17,18 @@ class Controller_Admin_Employees extends Admincontroller {
 
 	public function action_employee()
 	{
+		$statuses = array(
+			'0option' => array(
+				'@value'   => 'active',
+				'$content' => 'Active',
+			),
+			'1option' => array(
+				'@value'   => 'inactive',
+				'$content' => 'Inactive',
+			),
+		);
+		xml::to_XML($statuses, $this->xml_content->appendChild($this->dom->createElement('statuses')));
+
 		if (isset($_GET['id']))
 		{
 			$employee = new Employee($_GET['id']);
@@ -56,7 +68,6 @@ class Controller_Admin_Employees extends Admincontroller {
 
 			$this->add_message($post->get('firstname').' (ID: '.$employee_id.') was added as employee');
 		}
-		else $this->redirect();
 	}
 
 }

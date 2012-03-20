@@ -12,7 +12,7 @@
 		<html>
 			<head>
 				<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-				<link type="text/css" href="css/style.css" rel="stylesheet" media="all" />
+				<link type="text/css" href="css/pdfs.css" rel="stylesheet" media="all" />
 
 				<base href="http://{root/meta/domain}{root/meta/base}" />
 
@@ -223,14 +223,14 @@
 					</td>
 					<td class="left">
 						<strong>Internet:</strong><br />
-						<xsl:text>www.larvit.se</xsl:text>
+						<xsl:text>www.hemligabyran.se.se</xsl:text>
 					</td>
 					<td class="center">
 						<strong>Adress:</strong><br />
 						<xsl:text>Havsörnsvägen 8, 123 49 Farsta</xsl:text>
 					</td>
 					<td class="right">
-						<strong>Larv IT AB innehar F-skattesedel.</strong>
+						<strong>Hemliga Byrån innehar F-skattesedel.</strong>
 					</td>
 				</table>
 			</body>

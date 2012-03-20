@@ -145,10 +145,18 @@
 				<xsl:call-template name="form_line">
 					<xsl:with-param name="id" select="concat('qty_item_',.)" />
 					<xsl:with-param name="label" select="'Quantity:'" />
+					<xsl:with-param name="value" select="'1'" />
 				</xsl:call-template>
 
 				<p>---</p>
 			</xsl:for-each>
+
+			<xsl:call-template name="form_line">
+				<xsl:with-param name="id"            select="'template'" />
+				<xsl:with-param name="label"         select="'Choose template:'" />
+				<xsl:with-param name="option_ids"    select="/root/content/templates/file" />
+				<xsl:with-param name="option_values" select="/root/content/templates/file" />
+			</xsl:call-template>
 
 			<xsl:call-template name="form_button">
 				<xsl:with-param name="id" select="'add_item'" />

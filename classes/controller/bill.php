@@ -10,7 +10,7 @@ class Controller_Bill extends Xsltcontroller {
 	public function action_index()
 	{
 		// Set the name of the template to use
-		$this->xslt_stylesheet = 'bill';
+		$this->xslt_stylesheet = (empty($_GET['template']) || !isset($_GET['template'])) ? 'bills/default': 'bills/'.$_GET['template'];
 
 		if (isset($_GET['billnr']))
 		{

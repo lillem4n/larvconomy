@@ -20,9 +20,10 @@ class Model_Transaction extends Model
 		}
 		elseif ($id > 0)
 		{
+			$id = (int) preg_replace("/[^0-9]+/", '', $id);
 			if ($this->load_entry_data($id))
 			{
-				$this->id = preg_replace("/[^0-9]+/", '', $id);
+				$this->id = $id;
 			}
 		}
 	}
@@ -122,7 +123,7 @@ class Model_Transaction extends Model
 
 	private function load_entry_data($id)
 	{
-		return ($this->data = $this->pdo->query('SELECT * FROM transactions WHERE id = ?', $id)->fetch(PDO::FETCH_ASSOC));
+		return ($this->data = $this->pdo->query('SELECT * FROM transactions WHERE id = '.$id)->fetch(PDO::FETCH_ASSOC));
 	}
 
 }

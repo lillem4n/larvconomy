@@ -102,23 +102,6 @@
 				<xsl:attribute name="action">employees/employee</xsl:attribute>
 			</xsl:if>
 
-			<!-- Include an error -->
-			<!--xsl:if test="/root/content/errors/form_errors/field_name = 'User::field_name_available'">
-				<xsl:call-template name="form_line">
-					<xsl:with-param name="id" select="'field_name'" />
-					<xsl:with-param name="label" select="'Field name:'" />
-					<xsl:with-param name="error" select="'This field name is already taken'" />
-				</xsl:call-template>
-			</xsl:if-->
-
-			<!-- no error -->
-			<!--xsl:if test="not(/root/content/errors/form_errors/field_name = 'User::field_name_available')">
-				<xsl:call-template name="form_line">
-					<xsl:with-param name="id" select="'field_name'" />
-					<xsl:with-param name="label" select="'Field name:'" />
-				</xsl:call-template>
-			</xsl:if-->
-
 			<xsl:if test="/root/meta/url_params/id">
 				<xsl:call-template name="form_line">
 					<xsl:with-param name="id" select="'id'" />

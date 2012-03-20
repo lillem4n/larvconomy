@@ -44,13 +44,13 @@ class Model_Bill extends Model
 	                            )
 	 * @param str $comment - Optional
 	 */
-	public static function new_bill($customer_id, $due_date, $contact, $items, $comment = '')
+	public static function new_bill($customer_id, $due_date, $contact, $items, $comment = '', $template = 'default')
 	{
 		$pdo = Kohana_pdo::instance();
 
 		if (self::$prepared_insert == NULL)
 		{
-			self::$prepared_insert      = $pdo->prepare('INSERT INTO bills (due_date,customer_id,customer_name,customer_orgnr,customer_contact,customer_tel,customer_email,customer_street,customer_zip,customer_city,comment,contact) VALUES(?,?,?,?,?,?,?,?,?,?,?,?)');
+			self::$prepared_insert      = $pdo->prepare('INSERT INTO bills (due_date,customer_id,customer_name,customer_orgnr,customer_contact,customer_tel,customer_email,customer_street,customer_zip,customer_city,comment,contact,template) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)');
 			self::$prepared_item_insert = $pdo->prepare('INSERT INTO bills_items (item_id,bill_id,artnr,spec,qty,price,delivery_date) VALUES(?,?,?,?,?,?,?)');
 		}
 
@@ -68,7 +68,8 @@ class Model_Bill extends Model
 			$customer_model->get('zip'),
 			$customer_model->get('city'),
 			$comment,
-			$contact
+			$contact,
+			$template
 		));
 
 		$bill_id = $pdo->lastInsertId();
@@ -94,7 +95,7 @@ class Model_Bill extends Model
 		if ($date === FALSE) $date = date('Y-m-d', time());
 
 		$this->pdo->query('UPDATE bills        SET paid_date     = \''.date('Y-m-d', strtotime($date)).'\' WHERE id          = '.$this->pdo->quote($this->id));
-		$this->pdo->query('UPDATE transactions SET transfer_date = \''.date('Y-m-d', strtotime($date)).'\' WHERE description = \'Bill '.$this->pdo->quote($this->id).'\';');
+		$this->pdo->query('UPDATE transactions SET transfer_date = \''.date('Y-m-d', strtotime($date)).'\' WHERE description = \'Bill '.intval($this->id).'\';');
 
 		return TRUE;
 	}
