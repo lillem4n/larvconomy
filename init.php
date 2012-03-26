@@ -1,18 +1,19 @@
 <?php defined('SYSPATH') or die('No direct script access.');
-if ( ! is_dir(APPPATH.'user_content/pdf')) mkdir(APPPATH.'user_content/pdf');
+if ( ! is_dir(APPPATH.'user_content/pdf'))         mkdir(APPPATH.'user_content/pdf');
+if ( ! is_dir(APPPATH.'user_content/attachments')) mkdir(APPPATH.'user_content/attachments');
 
 $pdo		= Kohana_pdo::instance('default');
 $db_name	= Kohana::$config->load('pdo.default.database_name');
-$prefix		= Kohana::$config->load('pdo.default.db_prefix');
+#$prefix		= Kohana::$config->load('pdo.default.db_prefix');
 $columns	= $pdo->query('
-					SHOW Tables in 
-						'.$db_name.' 
-					WHERE Tables_in_'.$db_name.' 
-					IN (\''.$prefix.'bills_items\', 
-						\''.$prefix.'bills\', 
-						\''.$prefix.'employees\', 
-						\''.$prefix.'transactions\', 
-						\''.$prefix.'customers\')')
+					SHOW Tables in
+						'.$db_name.'
+					WHERE Tables_in_'.$db_name.'
+					IN (\'bills_items\',
+						\'bills\',
+						\'employees\',
+						\'transactions\',
+						\'customers\')')
 					->fetchAll(PDO::FETCH_COLUMN);
 
 if (count($columns) != 5)
@@ -22,7 +23,7 @@ if (count($columns) != 5)
 		-- Table structure for table `bills`
 		--
 
-		CREATE TABLE IF NOT EXISTS `'.$prefix.'bills` (
+		CREATE TABLE IF NOT EXISTS `bills` (
 			`id` int(11) NOT NULL AUTO_INCREMENT,
 			`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			`due_date` timestamp NOT NULL DEFAULT "0000-00-00 00:00:00",
@@ -39,6 +40,7 @@ if (count($columns) != 5)
 			`paid_date` timestamp NULL DEFAULT NULL,
 			`invoice_sent` timestamp NULL DEFAULT NULL,
 			`contact` varchar(255) NOT NULL,
+			`template` varchar(255) NOT NULL,
 			PRIMARY KEY (`id`),
 			KEY `customer_id` (`customer_id`)
 		) ENGINE = INNODB CHARACTER SET utf8 COLLATE utf8_bin;
@@ -49,7 +51,7 @@ if (count($columns) != 5)
 		-- Table structure for table `bills_items`
 		--
 
-		CREATE TABLE IF NOT EXISTS `'.$prefix.'bills_items` (
+		CREATE TABLE IF NOT EXISTS `bills_items` (
 			`item_id` int(11) NOT NULL,
 			`bill_id` int(11) NOT NULL,
 			`artnr` varchar(50) NOT NULL,
@@ -66,7 +68,7 @@ if (count($columns) != 5)
 		-- Table structure for table `customers`
 		--
 
-		CREATE TABLE IF NOT EXISTS `'.$prefix.'customers` (
+		CREATE TABLE IF NOT EXISTS `customers` (
 			`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 			`name` varchar(255) NOT NULL,
 			`orgnr` bigint(20) unsigned NOT NULL,
@@ -87,7 +89,7 @@ if (count($columns) != 5)
 		--
 
 
-		CREATE TABLE IF NOT EXISTS `'.$prefix.'employees` (
+		CREATE TABLE IF NOT EXISTS `employees` (
 			`id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 			`lastname` varchar(255) NOT NULL,
 			`firstname` varchar(255) NOT NULL,
@@ -110,7 +112,7 @@ if (count($columns) != 5)
 		-- Table structure for table `transactions`
 		--
 
-		CREATE TABLE IF NOT EXISTS `'.$prefix.'transactions` (
+		CREATE TABLE IF NOT EXISTS `transactions` (
 			`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
 			`accounting_date` date NOT NULL,
 			`transfer_date` date DEFAULT NULL,

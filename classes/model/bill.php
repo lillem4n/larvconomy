@@ -26,6 +26,19 @@ class Model_Bill extends Model
 		return FALSE;
 	}
 
+
+	public function get_attachments($bill_id)
+	{
+		$attachments = array();
+		foreach(glob(Kohana::config->load('user_content.dir').'/'.$bill_id.'/*') as $file_array)
+		{
+			$file = explode('/',$file_array);
+			$file = end($file);
+			$attachments[] = $file;
+		}
+		return $attachments;
+	}
+
 	/**
 	 * Add a bill
 	 *
@@ -44,13 +57,13 @@ class Model_Bill extends Model
 	                            )
 	 * @param str $comment - Optional
 	 */
-	public static function new_bill($customer_id, $due_date, $contact, $items, $comment = '', $template = 'default')
+	public static function new_bill($customer_id, $due_date, $contact, $items, $comment = '', $template = 'default', $mail_body = '')
 	{
 		$pdo = Kohana_pdo::instance();
 
 		if (self::$prepared_insert == NULL)
 		{
-			self::$prepared_insert      = $pdo->prepare('INSERT INTO bills (due_date,customer_id,customer_name,customer_orgnr,customer_contact,customer_tel,customer_email,customer_street,customer_zip,customer_city,comment,contact,template) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)');
+			self::$prepared_insert      = $pdo->prepare('INSERT INTO bills (due_date,customer_id,customer_name,customer_orgnr,customer_contact,customer_tel,customer_email,customer_street,customer_zip,customer_city,comment,contact,template, mail_body) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)');
 			self::$prepared_item_insert = $pdo->prepare('INSERT INTO bills_items (item_id,bill_id,artnr,spec,qty,price,delivery_date) VALUES(?,?,?,?,?,?,?)');
 		}
 
@@ -69,7 +82,8 @@ class Model_Bill extends Model
 			$customer_model->get('city'),
 			$comment,
 			$contact,
-			$template
+			$template,
+			$mail_body
 		));
 
 		$bill_id = $pdo->lastInsertId();
@@ -104,7 +118,9 @@ class Model_Bill extends Model
 	{
 		try
 		{
-			$email_response = (bool) Email::factory(Kohana::$config->load('larv.email.bill_subject'),Kohana::$config->load('larv.email.bill_message'))
+			$mail_body = $this->pdo->query('SELECT mail_body FROM bills WHERE id = '.$this->pdo->quote($this->id))->fetchColumn();
+//die(var_dump($mail_body));
+			$email_response = (bool) Email::factory(Kohana::$config->load('larv.email.bill_subject'),$mail_body)
 				->to($this->get('customer_email'))
 				->from(Kohana::$config->load('larv.email.from'), Kohana::$config->load('larv.email.from_name'))
 				->attach_file(APPPATH.'user_content/pdf/bill_'.$this->id.'.pdf')

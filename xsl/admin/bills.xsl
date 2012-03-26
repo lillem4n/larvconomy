@@ -88,7 +88,7 @@
 
 	<!-- New bill -->
   <xsl:template match="content[../meta/controller = 'bills' and ../meta/action = 'bill']">
-		<form method="post" action="bills/bill">
+		<form method="post" action="bills/bill" enctype="multipart/form-data">
 
 			<label for="add_field">
 				<xsl:text>Customer:</xsl:text>
@@ -147,21 +147,41 @@
 					<xsl:with-param name="label" select="'Quantity:'" />
 					<xsl:with-param name="value" select="'1'" />
 				</xsl:call-template>
-
 				<p>---</p>
 			</xsl:for-each>
-
-			<xsl:call-template name="form_line">
-				<xsl:with-param name="id"            select="'template'" />
-				<xsl:with-param name="label"         select="'Choose template:'" />
-				<xsl:with-param name="option_ids"    select="/root/content/templates/file" />
-				<xsl:with-param name="option_values" select="/root/content/templates/file" />
-			</xsl:call-template>
 
 			<xsl:call-template name="form_button">
 				<xsl:with-param name="id" select="'add_item'" />
 				<xsl:with-param name="value" select="'Add another item'" />
 			</xsl:call-template>
+
+			<p>
+				<h2>Template</h2>
+				You can choose what kind of template you want to use for your invoices.<br />
+				Chose one in the list below. You can also edit and create your own templates
+			</p>
+			<!-- Invoice template for PDF creation -->
+			<xsl:call-template name="form_line">
+				<xsl:with-param name="id"            select="'template'" />
+				<xsl:with-param name="label"         select="'Choose template:'" />
+				<xsl:with-param name="option_ids"    select="/root/content/templates/template" />
+				<xsl:with-param name="option_values" select="/root/content/templates/template" />
+			</xsl:call-template>
+
+			<p>
+				<h2>Email invoice</h2>
+				You can choose what kind of template you want to use for your invoices.<br />
+				Chose one in the list below. You can also edit and create your own templates
+			</p>
+			<!-- Mail to send to costumer -->
+			<xsl:call-template name="form_line">
+				<xsl:with-param name="id" select="'mail_body'" />
+				<xsl:with-param name="label" select="'Mail body content:'" />
+				<xsl:with-param name="type" select="'textarea'" />
+				<xsl:with-param name="rows" select="'5'" />
+				<xsl:with-param name="value" select="/root/content/formdata/field[@id = 'mail_body']" />
+			</xsl:call-template>
+
 
 			<xsl:call-template name="form_button">
 				<xsl:with-param name="id" select="'create_bill'" />

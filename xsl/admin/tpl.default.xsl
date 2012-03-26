@@ -21,7 +21,7 @@
 		<html>
 			<head>
 				<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-				<link type="text/css" href="{/root/meta/base}css/admin/style.css" rel="stylesheet" media="all" />
+				<link type="text/css" href="{/root/meta/base}css/admin/larvconomy.css" rel="stylesheet" media="all" />
 				<link href='http://fonts.googleapis.com/css?family=Cuprum&amp;subset=latin' rel='stylesheet' type='text/css' />
 				<script type="text/javascript" src="{/root/meta/base}js/jquery-1.6.2.min.js"><xsl:comment></xsl:comment></script>
 				<script type="text/javascript" src="{/root/meta/base}js/common.js"><xsl:comment></xsl:comment></script>

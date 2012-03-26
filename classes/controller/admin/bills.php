@@ -52,7 +52,7 @@ class Controller_Admin_Bills extends Admincontroller {
 		}
 
 		$this->xml_content_bill_template = $this->xml_content->appendChild($this->dom->createElement('templates'));
-		xml::to_XML($template, $this->xml_content_bill_template, 'file');
+		xml::to_XML($template, $this->xml_content_bill_template, 'template');
 
 		if ( ! isset($_SESSION['bills']['items'])) $_SESSION['bills']['items']['1item'] = 1;
 
@@ -93,7 +93,7 @@ class Controller_Admin_Bills extends Admincontroller {
 
 				if (count($items) && $post->validate())
 				{
-					$bill_id = Bill::new_bill($post->get('customer_id'), strtotime($post->get('due_date')), $post->get('contact'), $items, $post->get('comment'));
+					$bill_id = Bill::new_bill($post->get('customer_id'), strtotime($post->get('due_date')), $post->get('contact'), $items, $post->get('comment'),$post->get('template'), $post->get('mail_body'));
 					$this->add_message('Created bill nr '.$bill_id);
 					unset($_SESSION['bills']['items']);
 
@@ -121,7 +121,8 @@ class Controller_Admin_Bills extends Admincontroller {
 				else
 				{
 					$this->add_error('Not enough data');
-					$post->set('due_date', date('Y-m-d', strtotime($post->get('due_date'))));
+					$post->set('due_date' , date('Y-m-d', strtotime($post->get('due_date'))));
+					$post->set('mail_body', Kohana::$config->load('larv.email.bill_message'));
 					$this->set_formdata($post->as_array());
 				}
 			}
@@ -129,7 +130,7 @@ class Controller_Admin_Bills extends Admincontroller {
 		}
 		else
 		{
-			$this->set_formdata(array('due_date' => date('Y-m-d', time() + 20*24*60*60)));
+			$this->set_formdata(array('due_date' => date('Y-m-d', time() + 20*24*60*60),'mail_body' => Kohana::$config->load('larv.email.bill_message')));
 		}
 
 		xml::to_XML($_SESSION['bills'], $this->xml_content);

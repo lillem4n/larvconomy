@@ -1,0 +1,344 @@
+/* Larvconomy CSS */
+*
+{
+	font-family:      arial;
+	font-size:        13px;
+	color:            #3c3c3b;
+	padding:          0;
+	margin:           0;
+}
+
+body
+{
+	padding-left:     30px;
+}
+
+
+h1
+{
+	position:         absolute;
+	font-size:        54px;
+	font-weight:      normal;
+	top:              19px;
+}
+
+img
+{
+	position:         absolute;
+	top:              72px;
+	width:            324px;
+	left:             30px;
+}
+
+table
+{
+	clear:            both;
+}
+
+table.box_table
+{
+	border-spacing:   0;
+}
+
+table.box_table tr.column_decider {border-spacing: 0;}
+
+table.box_table tr.column_decider td {height: 1px;}
+
+table.box_table td
+{
+	border:                     1px solid #f2a201;
+	border-top:                 none;
+	border-bottom-left-radius:  5px;
+	border-bottom-right-radius: 5px;
+	text-align:                 center;
+}
+
+table.box_table td.nocontent
+{
+	border:                     none;
+}
+
+table.box_table td.hclearer
+{
+	height:                     11px;
+	border:                     none;
+	padding:                    0;
+}
+
+table.box_table td.vclearer
+{
+	padding:                    0;
+	width:                      11px;
+	border:                     none;
+}
+
+table.box_table th
+{
+	border:                     1px solid #f2a201;
+	border-bottom:              none;
+	background-color:           #fcc200;
+	font-weight:                normal;
+	padding:                    2px;
+	border-top-left-radius:     5px;
+	border-top-right-radius:    5px;
+}
+
+table.box_table td
+{
+	font-weight:                bold;
+	padding:                    8px;
+}
+
+table.box_table td.col1 { width: 150px; }
+table.box_table td.col2 { width: 150px; }
+table.box_table td.col3 { width: 109px; }
+table.box_table td.col4 { width: 109px; }
+
+/** Salary table **/
+table.salary
+{
+	border-spacing:   0;
+	margin-left:      70px;
+}
+
+	table.salary th,
+	table.salary td,
+	table.salary td strong
+	{
+		font-size:        18px;
+	}
+
+	table.salary th
+	{
+		border:           1px solid #F2A201;
+		border-bottom:    none;
+		background-color: #fcc200;
+		font-weight:      normal;
+		padding:          5px;
+		width:            200px;
+	}
+
+		table.salary th.thingie
+		{
+			border-top-left-radius: 5px;
+			border-right:     none;
+			padding-left:     20px;
+			text-align:       left;
+		}
+
+		table.salary th.numbers
+		{
+			border-top-right-radius: 5px;
+			border-left:      none;
+			padding-right:    20px;
+			text-align:       right;
+		}
+
+	table.salary td
+	{
+		padding:          3px;
+	}
+
+		table.salary td.thingie
+		{
+			border-left:      1px solid #F2A201;
+			padding-left:     20px;
+			text-align:       left;
+		}
+
+		table.salary td.numbers
+		{
+			border-right:     1px solid #F2A201;
+			padding-right:    20px;
+			text-align:       right;
+		}
+
+	table.salary tr.last td
+	{
+		border-bottom:    1px solid #F2A201;
+		border-top:       1px solid #F2A201;
+	}
+
+		table.salary tr.last td strong
+		{
+			font-size:        22px;
+		}
+
+		table.salary tr.last td.thingie
+		{
+			border-bottom-left-radius: 5px;
+		}
+
+		table.salary tr.last td.numbers
+		{
+			border-bottom-right-radius: 5px;
+		}
+
+
+
+
+/** End of Salary table **/
+
+/** Items table **/
+table.items
+{
+	border-spacing:   0;
+}
+
+	table.items tr.bottom td.tot_ex_vat_value,
+	table.items tr.bottom td.vat_value,
+	table.items tr.bottom td.tot_value
+	{
+		font-weight:      normal;
+		border-right:     1px solid #f2a201;
+	}
+
+	table.items tr.bottom td.tot_ex_vat,
+	table.items tr.bottom td.vat,
+	table.items tr.bottom td.tot
+	{
+		border-left:     1px solid #f2a201;
+	}
+
+	table.items tr.bottom td.tot
+	{
+		border-bottom:   1px solid #f2a201;
+		border-bottom-left-radius: 5px;
+		font-weight:     bold;
+	}
+
+	table.items tr.bottom td.tot_value
+	{
+		border-bottom:   1px solid #f2a201;
+		border-bottom-right-radius: 5px;
+		font-weight:     bold;
+	}
+
+	table.items tr.bottom td
+	{
+		background-color: #fff;
+		text-align:       right;
+	}
+
+	table.items tr.bottom td.fail_info
+	{
+		text-align:       left;
+		vertical-align:   top;
+		font-weight:      bold;
+		font-size:        11px;
+	}
+
+	table.items tr.odd td
+	{
+		background-color: #fef3cc;
+	}
+
+	table.items th
+	{
+		background-color: #fcc200;
+		font-weight:      normal;
+		padding:          2px;
+		border-top:       1px solid #f2a201;
+		border-bottom:    1px solid #f2a201;
+	}
+
+		table.items th.artnr
+		{
+			border-left:      1px solid #f2a201;
+			border-top-left-radius: 5px;
+			width:            98px;
+		}
+
+		table.items th.spec
+		{
+			width:            247px;
+		}
+
+		table.items th.qty
+		{
+			width:            83px;
+		}
+
+		table.items th.single_price
+		{
+			width:            82px;
+		}
+
+		table.items th.price
+		{
+			border-right:     1px solid #f2a201;
+			border-top-right-radius: 5px;
+			width:            83px;
+		}
+
+	table.items td
+	{
+		background-color: #fceccc;
+		font-weight:      normal;
+		padding:          2px 12px 2px 12px;
+	}
+
+		table.items td.last
+		{
+			border-bottom:    1px solid #f2a201;
+		}
+
+		table.items td.artnr
+		{
+			border-left:      1px solid #f2a201;
+			border-right:     1px solid #f2a201;
+		}
+
+			table.items td.artnr.last
+			{
+				border-bottom-left-radius: 5px;
+			}
+
+		table.items td.qty
+		{
+			border-right:     1px solid #f2a201;
+			border-left:      1px solid #f2a201;
+			text-align:       right;
+		}
+
+		table.items td.single_price
+		{
+			border-right:     1px solid #f2a201;
+			text-align:       right;
+		}
+
+		table.items td.price
+		{
+			border-right:     1px solid #f2a201;
+			text-align:       right;
+		}
+/** End of Items table **/
+
+table.footer
+{
+
+}
+
+table.footer td
+{
+	vertical-align:  top;
+	font-size:       11px;
+	padding-top:     5px;
+}
+
+table.footer td.left
+{
+	width:           105px;
+}
+
+table.footer td.center
+{
+	width:           170px;
+}
+
+
+table.footer td.right
+{
+	width:           220px;
+	text-align:      right;
+}
