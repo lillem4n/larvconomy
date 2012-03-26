@@ -36,7 +36,7 @@ class Model_Bill extends Model
 			$file = end($file);
 			$attachments[] = $file;
 		}
-		return $attachments;
+		return $attachments
 	}
 
 	/**
@@ -119,7 +119,6 @@ class Model_Bill extends Model
 		try
 		{
 			$mail_body = $this->pdo->query('SELECT mail_body FROM bills WHERE id = '.$this->pdo->quote($this->id))->fetchColumn();
-//die(var_dump($mail_body));
 			$email_response = (bool) Email::factory(Kohana::$config->load('larv.email.bill_subject'),$mail_body)
 				->to($this->get('customer_email'))
 				->from(Kohana::$config->load('larv.email.from'), Kohana::$config->load('larv.email.from_name'))

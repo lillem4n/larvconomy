@@ -24,26 +24,27 @@ if (count($columns) != 5)
 		--
 
 		CREATE TABLE IF NOT EXISTS `bills` (
-			`id` int(11) NOT NULL AUTO_INCREMENT,
-			`date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-			`due_date` timestamp NOT NULL DEFAULT "0000-00-00 00:00:00",
-			`customer_id` int(10) unsigned NOT NULL,
-			`customer_name` varchar(255) NOT NULL,
-			`customer_orgnr` bigint(20) unsigned NOT NULL,
-			`customer_contact` varchar(255) NOT NULL,
-			`customer_tel` varchar(100) NOT NULL,
-			`customer_email` varchar(100) NOT NULL,
-			`customer_street` varchar(255) NOT NULL,
-			`customer_zip` varchar(50) NOT NULL,
-			`customer_city` varchar(255) NOT NULL,
-			`comment` text NOT NULL,
-			`paid_date` timestamp NULL DEFAULT NULL,
-			`invoice_sent` timestamp NULL DEFAULT NULL,
-			`contact` varchar(255) NOT NULL,
-			`template` varchar(255) NOT NULL,
-			PRIMARY KEY (`id`),
-			KEY `customer_id` (`customer_id`)
-		) ENGINE = INNODB CHARACTER SET utf8 COLLATE utf8_bin;
+		  `id` int(11) NOT NULL AUTO_INCREMENT,
+		  `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+		  `due_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+		  `customer_id` int(10) unsigned NOT NULL,
+		  `customer_name` varchar(255) COLLATE utf8_bin NOT NULL,
+		  `customer_orgnr` bigint(20) unsigned NOT NULL,
+		  `customer_contact` varchar(255) COLLATE utf8_bin NOT NULL,
+		  `customer_tel` varchar(100) COLLATE utf8_bin NOT NULL,
+		  `customer_email` varchar(100) COLLATE utf8_bin NOT NULL,
+		  `customer_street` varchar(255) COLLATE utf8_bin NOT NULL,
+		  `customer_zip` varchar(50) COLLATE utf8_bin NOT NULL,
+		  `customer_city` varchar(255) COLLATE utf8_bin NOT NULL,
+		  `comment` text COLLATE utf8_bin NOT NULL,
+		  `paid_date` timestamp NULL DEFAULT NULL,
+		  `contact` varchar(255) COLLATE utf8_bin NOT NULL,
+		  `email_sent` timestamp NULL DEFAULT NULL,
+		  `template` varchar(256) COLLATE utf8_bin NOT NULL,
+		  `mail_body` text COLLATE utf8_bin NOT NULL,
+		  PRIMARY KEY (`id`),
+		  KEY `customer_id` (`customer_id`)
+		) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 		-- --------------------------------------------------------
 

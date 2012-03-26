@@ -62,10 +62,6 @@ class Controller_Bill extends Xsltcontroller {
 /**/
 	}
 
-	public function rm_attachment($filename, $bill_id)
-	{
-		if(unlink(Kohana::config->load('user_content.dir').'/'.$bill_id.'/'.$filename)) return TRUE;
-		else                                                                            return FALSE;
-	}
+
 
 }
