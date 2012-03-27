@@ -36,7 +36,7 @@ class Model_Bill extends Model
 			$file = end($file);
 			$attachments[] = $file;
 		}
-		return $attachments
+		return $attachments;
 	}
 
 	/**

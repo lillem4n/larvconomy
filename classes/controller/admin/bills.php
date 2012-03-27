@@ -93,7 +93,7 @@ class Controller_Admin_Bills extends Admincontroller {
 
 				if (count($items) && $post->validate())
 				{
-					$bill_id = Bill::new_bill($post->get('customer_id'), strtotime($post->get('due_date')), $post->get('contact'), $items, $post->get('comment'),$post->get('template'), $post->get('mail_body'));
+					$bill_id = Bill::new_bill($post->get('customer_id'), strtotime($post->get('due_date')), $post->get('contact'), $items, $post->get('comment'), $post->get('template'), $post->get('mail_body'));
 					$this->add_message('Created bill nr '.$bill_id);
 					unset($_SESSION['bills']['items']);
 
@@ -130,7 +130,7 @@ class Controller_Admin_Bills extends Admincontroller {
 		}
 		else
 		{
-			$this->set_formdata(array('due_date' => date('Y-m-d', time() + 20*24*60*60),'mail_body' => Kohana::$config->load('larv.email.bill_message')));
+			$this->set_formdata(array('due_date' => date('Y-m-d', time() + 20*24*60*60), 'mail_body' => Kohana::$config->load('larv.email.bill_message')));
 		}
 
 		xml::to_XML($_SESSION['bills'], $this->xml_content);

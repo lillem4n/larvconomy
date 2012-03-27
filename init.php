@@ -44,7 +44,7 @@ if (count($columns) != 5)
 		  `mail_body` text COLLATE utf8_bin NOT NULL,
 		  PRIMARY KEY (`id`),
 		  KEY `customer_id` (`customer_id`)
-		) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+		) ENGINE=INNODB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 		-- --------------------------------------------------------
 
