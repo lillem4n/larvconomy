@@ -4,7 +4,7 @@ if ( ! is_dir(APPPATH.'user_content/attachments')) mkdir(APPPATH.'user_content/a
 
 $pdo		= Kohana_pdo::instance('default');
 $db_name	= Kohana::$config->load('pdo.default.database_name');
-#$prefix		= Kohana::$config->load('pdo.default.db_prefix');
+//$prefix		= Kohana::$config->load('pdo.default.db_prefix');
 $columns	= $pdo->query('
 					SHOW Tables in
 						'.$db_name.'
