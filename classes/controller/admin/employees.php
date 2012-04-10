@@ -68,6 +68,8 @@ class Controller_Admin_Employees extends Admincontroller {
 
 			$this->add_message($post->get('firstname').' (ID: '.$employee_id.') was added as employee');
 		}
+
+		else $this->redirect();
 	}
 
 }
