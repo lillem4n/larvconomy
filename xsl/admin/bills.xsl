@@ -155,8 +155,8 @@
 				<xsl:with-param name="value" select="'Add another item'" />
 			</xsl:call-template>
 
+			<h2>Template</h2>
 			<p>
-				<h2>Template</h2>
 				You can choose what kind of template you want to use for your invoices.<br />
 				Chose one in the list below. You can also edit and create your own templates
 			</p>
@@ -168,8 +168,8 @@
 				<xsl:with-param name="option_values" select="/root/content/templates/template" />
 			</xsl:call-template>
 
+			<h2>Email invoice</h2>
 			<p>
-				<h2>Email invoice</h2>
 				You can choose what kind of template you want to use for your invoices.<br />
 				Chose one in the list below. You can also edit and create your own templates
 			</p>
@@ -182,6 +182,13 @@
 				<xsl:with-param name="value" select="/root/content/formdata/field[@id = 'mail_body']" />
 			</xsl:call-template>
 
+			<xsl:call-template name="form_line">
+				<xsl:with-param name="id" select="'attachments'" />
+				<xsl:with-param name="name" select="'attachments[]'" />
+				<xsl:with-param name="label" select="'Attachments'" />
+				<xsl:with-param name="type" select="'file'" />
+				<xsl:with-param name="multiple" select="'multiple'" />
+			</xsl:call-template>
 
 			<xsl:call-template name="form_button">
 				<xsl:with-param name="id" select="'create_bill'" />

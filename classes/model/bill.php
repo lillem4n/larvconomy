@@ -30,7 +30,7 @@ class Model_Bill extends Model
 	public function get_attachments($bill_id)
 	{
 		$attachments = array();
-		foreach(glob(Kohana::config->load('user_content.dir').'/'.$bill_id.'/*') as $file_array)
+		foreach(glob(Kohana::$config->load('user_content.dir').'/'.$bill_id.'/*') as $file_array)
 		{
 			$file = explode('/',$file_array);
 			$file = end($file);
@@ -119,11 +119,15 @@ class Model_Bill extends Model
 		try
 		{
 			$mail_body = $this->pdo->query('SELECT mail_body FROM bills WHERE id = '.$this->pdo->quote($this->id))->fetchColumn();
-			$email_response = (bool) Email::factory(Kohana::$config->load('larv.email.bill_subject'), $mail_body)
+			$email_response = Email::factory(Kohana::$config->load('larv.email.bill_subject'), $mail_body)
 				->to($this->get('customer_email'))
 				->from(Kohana::$config->load('larv.email.from'), Kohana::$config->load('larv.email.from_name'))
-				->attach_file(APPPATH.'user_content/pdf/bill_'.$this->id.'.pdf')
-				->send($errors);
+				->attach_file(APPPATH.'user_content/pdf/bill_'.$this->id.'.pdf');
+				foreach ( glob(Kohana::$config->load('user_content.dir').'/attachments/'.$this->id.'/*') as $attachment)
+				{
+					$email_response->attach_file($attachment);
+				}
+				$email_response->send($errors);
 		}
 		catch (Swift_RfcComplianceException $e)
 		{
@@ -134,6 +138,44 @@ class Model_Bill extends Model
 		if ($email_response) $this->pdo->query('UPDATE bills SET email_sent = CURRENT_TIMESTAMP() WHERE id = '.$this->pdo->quote($this->id));
 
 		return $email_response;
+	}
+
+	/**
+	 * function upload
+	 * @param  arr  (file) could be multi- or single dimensional file array
+	 * @param  str  (path) to set where in the user_content dir the upload should be placed.
+	 * @return bool $return to check whether all of the files could be uploaded.
+	 **/
+
+	public static function upload($file, $path = FALSE)
+	{
+		foreach ($file as $file_array => $attachments)
+		{
+			if (is_array($attachments))
+			{
+				foreach ($attachments as $type => $i) //Where $i is [<int>]
+				{
+					foreach ($i as $key => $val)
+					$files[$key][$type] = $val;
+				}
+			}
+			else
+			{
+				$files[] = $file;
+			}
+		}
+
+		$path = Kohana::$config->load('user_content.dir').'/'.$path;
+		if ( ! is_dir($path)) mkdir($path, 0777);
+
+		foreach ($files as $file)
+		{
+			if (move_uploaded_file($file['tmp_name'], $path.'/'.$file['name']))
+				$return = TRUE;
+			else
+				$return = FALSE;
+		}
+		return $return;
 	}
 
 }

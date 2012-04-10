@@ -22,22 +22,6 @@ class Controller_Admin_Bills extends Admincontroller {
 			$this->add_error($error);
 	}
 
-	public function action_email()
-	{
-		$session = Session::instance();
-		$bill_id = $this->request->param('options');
-		$bill    = new Bill($bill_id);
-		if ($bill->send_mail())
-			$session->set('message', 'Mail sent for bill #'.$bill_id);
-		else
-			$session->set('error', 'Mail for bill #'.$bill_id.' failed!');
-
-		$this->redirect();
-
-		// if email sent then update bills.invoice_sent with CURRENT_TIMESTAMP
-	}
-
-
 	public function action_bill()
 	{
 		$this->xml_content_customers = $this->xml_content->appendChild($this->dom->createElement('customers'));
@@ -117,6 +101,11 @@ class Controller_Admin_Bills extends Admincontroller {
 					// Make the PDF
 					shell_exec('wkhtmltopdf --ignore-load-errors --password '.Kohana::$config->load('larv.dev_account.password').' --username '.Kohana::$config->load('larv.dev_account.username').' "'.$_SERVER['SERVER_NAME'].URL::site('bill?billnr='.$bill_id.'&template='.$post->get('template')).'" "'.APPPATH.'user_content/pdf/bill_'.$bill_id.'.pdf"');
 
+					if (isset($_FILES))
+					{
+						Bill::upload($_FILES, 'attachments/'.$bill_id);
+					}
+
 				}
 				else
 				{
@@ -134,6 +123,21 @@ class Controller_Admin_Bills extends Admincontroller {
 		}
 
 		xml::to_XML($_SESSION['bills'], $this->xml_content);
+	}
+
+	public function action_email()
+	{
+		$session = Session::instance();
+		$bill_id = $this->request->param('options');
+		$bill    = new Bill($bill_id);
+		if ($bill->send_mail())
+			$session->set('message', 'Mail sent for bill #'.$bill_id);
+		else
+			$session->set('error', 'Mail for bill #'.$bill_id.' failed!');
+
+		$this->redirect();
+
+		// if email sent then update bills.invoice_sent with CURRENT_TIMESTAMP
 	}
 
 	public function action_mark_as_paid()
