@@ -4,16 +4,16 @@ if ( ! is_dir(APPPATH.'user_content/attachments')) mkdir(APPPATH.'user_content/a
 
 $pdo		= Kohana_pdo::instance('default');
 $db_name	= Kohana::$config->load('pdo.default.database_name');
-//$prefix		= Kohana::$config->load('pdo.default.db_prefix');
+
 $columns	= $pdo->query('
 					SHOW Tables in
-						'.$db_name.'
+					    '.$db_name.'
 					WHERE Tables_in_'.$db_name.'
 					IN (\'bills_items\',
-						\'bills\',
-						\'employees\',
-						\'transactions\',
-						\'customers\')')
+					    \'bills\',
+					    \'employees\',
+					    \'transactions\',
+					    \'customers\')')
 					->fetchAll(PDO::FETCH_COLUMN);
 
 if (count($columns) != 5)

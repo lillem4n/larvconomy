@@ -23,7 +23,7 @@ class Controller_Admin_Wages extends Admincontroller {
 			}
 
 			$periods = array();
-			while (1 == 1)
+			while ($year <= $current_year && $month <= $current_month)
 			{
 				if ($year > $current_year) break;
 				elseif ($year == $current_year && $month > $current_month) break;
