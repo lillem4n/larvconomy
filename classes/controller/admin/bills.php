@@ -101,7 +101,8 @@ class Controller_Admin_Bills extends Admincontroller {
 					// Make the PDF
 					if (Kohana::$config->load('larv.htpassword.password') && Kohana::$config->load('larv.htpassword.username'))
 						shell_exec('wkhtmltopdf --ignore-load-errors --username '.Kohana::$config->load('larv.htpassword.username').' --password '.Kohana::$config->load('larv.htpassword.password').' "'.$_SERVER['SERVER_NAME'].URL::site('bill?billnr='.$bill_id.'&template='.$post->get('template')).'" "'.APPPATH.'user_content/pdf/bill_'.$bill_id.'.pdf"');
-
+					else
+						shell_exec('wkhtmltopdf --ignore-load-errors "'.$_SERVER['SERVER_NAME'].URL::site('bill?billnr='.$bill_id.'&template='.$post->get('template')).'" "'.APPPATH.'user_content/pdf/bill_'.$bill_id.'.pdf"');
 					if (isset($_FILES))
 					{
 						Bill::upload($_FILES, 'attachments/'.$bill_id);
