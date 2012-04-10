@@ -99,7 +99,8 @@ class Controller_Admin_Bills extends Admincontroller {
 					$this->set_formdata(array('due_date' => date('Y-m-d', time() + 20*24*60*60)));
 
 					// Make the PDF
-					shell_exec('wkhtmltopdf --ignore-load-errors --password '.Kohana::$config->load('larv.dev_account.password').' --username '.Kohana::$config->load('larv.dev_account.username').' "'.$_SERVER['SERVER_NAME'].URL::site('bill?billnr='.$bill_id.'&template='.$post->get('template')).'" "'.APPPATH.'user_content/pdf/bill_'.$bill_id.'.pdf"');
+					if (Kohana::$config->load('larv.htpassword.password') && Kohana::$config->load('larv.htpassword.username'))
+						shell_exec('wkhtmltopdf --ignore-load-errors --username '.Kohana::$config->load('larv.htpassword.username').' --password '.Kohana::$config->load('larv.htpassword.password').' "'.$_SERVER['SERVER_NAME'].URL::site('bill?billnr='.$bill_id.'&template='.$post->get('template')).'" "'.APPPATH.'user_content/pdf/bill_'.$bill_id.'.pdf"');
 
 					if (isset($_FILES))
 					{

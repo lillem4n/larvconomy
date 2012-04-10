@@ -25,7 +25,7 @@ return array
 		'bill_message' => 'This email contains an invoice from Larv IT AB',
 		'bill_subject' => 'Invoice',
 	),
-	'dev_account' => array(
+	'htpassword' => array(
 		'username'     => 'username',
 		'password'     => 'password'
 	),
