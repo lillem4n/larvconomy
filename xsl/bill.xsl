@@ -84,9 +84,9 @@
 					<tr><td colspan="7" class="hclearer"></td></tr>
 
 					<tr>
-						<th>Er referens</th>
-						<td class="vclearer"></td>
 						<th>Vår referens</th>
+						<td class="vclearer"></td>
+						<th>Er referens</th>
 						<td class="vclearer"></td>
 						<th>Betalningsvillkor</th>
 						<td class="vclearer"></td>
@@ -193,22 +193,22 @@
 					</tr>
 					<tr>
 						<td colspan="2" class="nocontent"></td>
-						<td>Stockholm</td>
+						<td>Hittepåstaden</td>
 						<td class="vclearer"></td>
-						<td colspan="3">556758-4874</td>
+						<td colspan="3">5588662431</555>
 					</tr>
 					<tr><td colspan="7" class="hclearer"></td></tr>
 					<tr>
-						<th>Bankgiro</th>
+						<th>BankGiro</th>
 						<td class="vclearer"></td>
 						<th>Momsreg.nr</th>
 						<td class="vclearer"></td>
 						<td colspan="3" class="nocontent"></td>
 					</tr>
 					<tr>
-						<td>429-9020</td>
+						<td>1111 222</td>
 						<td class="vclearer"></td>
-						<td>SE556758487401</td>
+						<td>SE558866243101</td>
 						<td class="vclearer"></td>
 						<td style="border: none;"></td>
 						<td class="vclearer"></td>
@@ -219,18 +219,18 @@
 				<table class="footer">
 					<td class="left">
 						<strong>Telefon:</strong><br />
-						<xsl:text>+46 709 77 1337</xsl:text>
+						<xsl:text>+46 8 111 22 11</xsl:text>
 					</td>
 					<td class="left">
 						<strong>Internet:</strong><br />
-						<xsl:text>www.larvit.se</xsl:text>
+						<xsl:text>foretaget.se</xsl:text>
 					</td>
 					<td class="center">
 						<strong>Adress:</strong><br />
-						<xsl:text>Havsörnsvägen 8, 123 49 Farsta</xsl:text>
+						<xsl:text>Gatanistan, 123 45 Hittepåstaden</xsl:text>
 					</td>
 					<td class="right">
-						<strong>Larv IT AB innehar F-skattesedel.</strong>
+						<strong>Stollebolaget AB innehar F-skattesedel.</strong>
 					</td>
 				</table>
 			</body>
