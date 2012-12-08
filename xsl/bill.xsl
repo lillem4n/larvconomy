@@ -21,7 +21,7 @@
 			<body>
 				<h1>Faktura</h1>
 
-				<img src="img/larvit_rgb_fullfarg.png" alt="" />
+				<!--img src="img/larvit_rgb_fullfarg.png" alt="" /-->
 
 				<table class="box_table">
 					<tr class="column_decider">
@@ -195,7 +195,7 @@
 						<td colspan="2" class="nocontent"></td>
 						<td>Hittepåstaden</td>
 						<td class="vclearer"></td>
-						<td colspan="3">5588662431</555>
+						<td colspan="3">5588662431</td>
 					</tr>
 					<tr><td colspan="7" class="hclearer"></td></tr>
 					<tr>
