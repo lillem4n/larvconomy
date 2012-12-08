@@ -60,6 +60,7 @@
 					<th class="medium_row right">Balance</th>
 					<th>Employee</th>
 					<th class="medium_row">Action</th>
+					<th>Vouchers</th>
 				</tr>
 			</thead>
 			<tfoot>
@@ -89,14 +90,14 @@
 			<td class="right"><xsl:value-of select="format-number(number(vat), '#,##0.00')" /></td>
 			<td class="right"><xsl:value-of select="format-number(number($balance + sum), '#,##0.00')" /></td>
 			<td><xsl:value-of select="employee_firstname" /><xsl:text> </xsl:text><xsl:value-of select="employee_lastname" /></td>
+			<td>[<a href="accounting/entry?id={@id}">Edit</a>]</td>
 			<td>
-				[<a>
-				<xsl:attribute name="href">
-					<xsl:text>accounting/entry?id=</xsl:text>
-					<xsl:value-of select="@id" />
-				</xsl:attribute>
-				<xsl:text>Edit</xsl:text>
-				</a>]
+				<xsl:for-each select="vouchers/voucher">
+					<a href="/user_content/vouchers/{../../@id}/{.}">
+						<xsl:value-of select="position()" />
+					</a>
+					<xsl:text> </xsl:text>
+				</xsl:for-each>
 			</td>
 		</tr>
 
@@ -117,7 +118,7 @@
 
 	<!-- New/edit entry -->
   <xsl:template match="content[../meta/action = 'entry']">
-		<form method="post" action="accounting/entry">
+		<form method="post" action="accounting/entry" enctype="multipart/form-data">
 			<xsl:if test="../meta/url_params/id">
 				<xsl:attribute name="action">accounting/entry?id=<xsl:value-of select="../meta/url_params/id" /></xsl:attribute>
 			</xsl:if>
@@ -159,6 +160,26 @@
 				<xsl:with-param name="label" select="'Employee:'" />
 				<xsl:with-param name="options" select="employees" />
 			</xsl:call-template>
+
+			<xsl:call-template name="form_line">
+				<xsl:with-param name="id" select="'voucher'" />
+				<xsl:with-param name="type" select="'file'" />
+			</xsl:call-template>
+
+			<h2>Vouchers</h2>
+
+			<xsl:for-each select="vouchers/voucher">
+				<a href="/user_content/vouchers/{/root/meta/url_params/id}/{.}" class="voucher">
+					<xsl:value-of select="." />
+				</a>
+
+				<xsl:call-template name="form_line">
+					<xsl:with-param name="name" select="'rm_voucher[]'" />
+					<xsl:with-param name="type" select="'checkbox'" />
+					<xsl:with-param name="label" select="'Delete the voucher above'" />
+				</xsl:call-template>
+				<input type="hidden" name="rm_voucher_names[]" value="{.}" />
+			</xsl:for-each>
 
 			<xsl:if test="../meta/url_params/id">
 				<xsl:call-template name="form_button">

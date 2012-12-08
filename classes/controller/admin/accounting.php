@@ -1,10 +1,10 @@
 <?php defined('SYSPATH') OR die('No direct access allowed.');
 
-class Controller_Admin_Accounting extends Admincontroller {
+class Controller_Admin_Accounting extends Admincontroller
+{
 
 	public function before()
 	{
-		$this->xslt_stylesheet = 'admin/accounting';
 		xml::to_XML(array('admin_page' => 'Accounting'), $this->xml_meta);
 		xml::to_XML(array('current_date' => date('Y-m-d', time())), $this->xml_meta);
 	}
@@ -13,7 +13,7 @@ class Controller_Admin_Accounting extends Admincontroller {
 	{
 		$accounting_node = $this->xml_content->appendChild($this->dom->createElement('accounting'));
 
-		xml::to_XML(Transactions::get(NULL, 'IF(transfer_date = 0,1,0),transfer_date;'), $accounting_node, 'entry', 'id');
+		xml::to_XML(Transactions::get(NULL, 'IF(transfer_date = 0,1,0),transfer_date;', NULL, TRUE), $accounting_node, 'entry', 'id');
 	}
 
 	public function action_entry()
@@ -54,10 +54,19 @@ class Controller_Admin_Accounting extends Admincontroller {
 					'employee_id'     => $post->get('employee_id'),
 				);
 
+				if (isset($_POST['rm_voucher']))
+				{
+					$new_transaction_data['rm_vouchers'] = array();
+					foreach (array_keys($_POST['rm_voucher']) as $nr)
+						$new_transaction_data['rm_vouchers'][] = $_POST['rm_voucher_names'][$nr];
+				}
+
 				if ( ! isset($_GET['id']))
 				{
 					$transaction = new Transaction(NULL, $new_transaction_data);
 					$this->add_message('Transaction '.$transaction->get_id().' added');
+					if (isset($_FILES['voucher'])) $transaction->add_voucher($_FILES['voucher']);
+					$this->set_formdata(array('accounting_date' => date('Y-m-d', time()), 'transfer_date' => date('Y-m-d', time())));
 				}
 				else
 				{
@@ -65,6 +74,8 @@ class Controller_Admin_Accounting extends Admincontroller {
 					$transaction->set($new_transaction_data);
 					$this->add_message('Transaction '.$transaction->get_id().' updated');
 					$this->set_formdata($transaction->get());
+					if (isset($_FILES['voucher'])) $transaction->add_voucher($_FILES['voucher']);
+					xml::to_XML($transaction->get('vouchers'), array('vouchers' => $this->xml_content), 'voucher');
 				}
 			}
 			else
@@ -77,6 +88,7 @@ class Controller_Admin_Accounting extends Admincontroller {
 		{
 			$transaction = new Transaction($_GET['id']);
 			$this->set_formdata($transaction->get());
+			xml::to_XML($transaction->get('vouchers'), array('vouchers' => $this->xml_content), 'voucher');
 		}
 		else
 		{
