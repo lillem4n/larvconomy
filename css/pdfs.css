@@ -173,9 +173,6 @@ table.salary
 			border-bottom-right-radius: 5px;
 		}
 
-
-
-
 /** End of Salary table **/
 
 /** Items table **/
@@ -196,6 +193,7 @@ table.items
 	table.items tr.bottom td.vat,
 	table.items tr.bottom td.tot
 	{
+		border-right:     1px solid #a2a2a2;
 		border-left:     1px solid #a2a2a2;
 	}
 
@@ -255,7 +253,7 @@ table.items
 
 		table.items th.qty
 		{
-			width:            83px;
+			width:            69px;
 		}
 
 		table.items th.vat
@@ -306,6 +304,12 @@ table.items
 		}
 
 		table.items td.single_price
+		{
+			border-right:     1px solid #a2a2a2;
+			text-align:       right;
+		}
+
+		table.items td.vat
 		{
 			border-right:     1px solid #a2a2a2;
 			text-align:       right;

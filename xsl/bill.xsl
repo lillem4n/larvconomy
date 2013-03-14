@@ -110,8 +110,8 @@
 						<th class="spec">Specifikation</th>
 						<th class="qty">Antal</th>
 						<th class="single_price">Á Pris</th>
-						<th class="price">Pris</th>
 						<th class="vat">Moms</th>
+						<th class="price">Pris</th>
 					</tr>
 
 					<xsl:for-each select="/root/content/bill/items/item">
@@ -143,36 +143,36 @@
 								</xsl:if>
 								<xsl:value-of select="format-number(price, '#&#160;###,00')" />
 							</td>
+							<td class="vat">
+								<xsl:if test="position() = count(/root/content/bill/items/item)">
+									<xsl:attribute name="class">vat last</xsl:attribute>
+								</xsl:if>
+								<xsl:value-of select="format-number(number(price) * (number(vat) - 1), '#&#160;###,00')" />
+							</td>
 							<td class="price">
 								<xsl:if test="position() = count(/root/content/bill/items/item)">
 									<xsl:attribute name="class">price last</xsl:attribute>
 								</xsl:if>
 								<xsl:value-of select="format-number(number(qty) * number(price), '#&#160;###,00')" />
 							</td>
-							<td class="price">
-								<xsl:if test="position() = count(/root/content/bill/items/item)">
-									<xsl:attribute name="class">vat last</xsl:attribute>
-								</xsl:if>
-								<xsl:value-of select="format-number(number(qty) * number(price) * (number(vat) - 1), '#&#160;###,00')" />
-							</td>
 						</tr>
 					</xsl:for-each>
 
 					<tr class="bottom">
 						<td colspan="2" rowspan="3" class="fail_info">Vid betalning efter förfallodatum debiteras<br />dröjsmålsränta enligt räntelagen.</td>
-						<td colspan="2" class="tot_ex_vat">Totalpris ex moms</td>
+						<td colspan="3" class="tot_ex_vat">Totalpris ex moms</td>
 						<td class="tot_ex_vat_value">
 							<xsl:call-template name="tot_ex_vat" />
 						</td>
 					</tr>
 					<tr class="bottom">
-						<td colspan="2" class="vat">Moms</td>
+						<td colspan="3" class="vat">Moms</td>
 						<td class="vat_value">
 							<xsl:call-template name="vat" />
 						</td>
 					</tr>
 					<tr class="bottom">
-						<td colspan="2" class="tot">Att betala</td>
+						<td colspan="3" class="tot">Att betala</td>
 						<td class="tot_value">
 							<xsl:call-template name="tot" />
 						</td>
