@@ -24,7 +24,6 @@
 		</ul>
 	</xsl:template>
 
-
 	<xsl:template match="/">
 		<xsl:if test="/root/content[../meta/controller = 'bills' and ../meta/action = 'index']">
 			<xsl:call-template name="template">
@@ -53,6 +52,7 @@
 					<th>Email sent</th>
 					<th class="right">Sum</th>
 					<th>PDF</th>
+					<th>HTTP</th>
 					<th class="medium_row">Action</th>
 				</tr>
 			</thead>
@@ -72,7 +72,8 @@
 							<xsl:value-of select="format-number(number(sum), '###,###,###.00')" />
 							<xsl:text> SEK</xsl:text>
 						</td>
-						<td><a href="http://{/root/meta/domain}{/root/meta/base}{concat('user_content/pdf/bill_',@id,'.pdf')}">Link</a></td>
+						<td><a href="http://{/root/meta/domain}{/root/meta/base}user_content/pdf/bill_{@id}.pdf">Link</a></td>
+						<td><a href="http://{/root/meta/domain}{/root/meta/base}bill?billnr={@id}">Link</a></td>
 						<td>
 							<!--xsl:text>[</xsl:text><a href="http://{/root/meta/domain}{/root/meta/base}bill?billnr={@id}">Details</a><xsl:text>]</xsl:text-->
 							<xsl:text>[</xsl:text><a href="bills/email/{@id}">Send email</a><xsl:text>]</xsl:text>
@@ -107,20 +108,20 @@
 			</label>
 
 			<xsl:call-template name="form_line">
-				<xsl:with-param name="id" select="'due_date'" />
+				<xsl:with-param name="id"    select="'due_date'" />
 				<xsl:with-param name="label" select="'Due date:'" />
 			</xsl:call-template>
 
 			<xsl:call-template name="form_line">
-				<xsl:with-param name="id" select="'contact'" />
+				<xsl:with-param name="id"    select="'contact'" />
 				<xsl:with-param name="label" select="'Their reference:'" />
 			</xsl:call-template>
 
 			<xsl:call-template name="form_line">
-				<xsl:with-param name="id" select="'comment'" />
+				<xsl:with-param name="id"    select="'comment'" />
 				<xsl:with-param name="label" select="'Comment:'" />
-				<xsl:with-param name="type" select="'textarea'" />
-				<xsl:with-param name="rows" select="'5'" />
+				<xsl:with-param name="type"  select="'textarea'" />
+				<xsl:with-param name="rows"  select="'5'" />
 			</xsl:call-template>
 
 			<h2>Items:</h2>
@@ -145,8 +146,6 @@
 				<xsl:call-template name="form_line">
 					<xsl:with-param name="id" select="concat('qty_item_',.)" />
 					<xsl:with-param name="label" select="'Quantity:'" />
-					<xsl:with-param name="value" select="'1'" />
-
 				</xsl:call-template>
 
 				<p>---</p>

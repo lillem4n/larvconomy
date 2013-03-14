@@ -50,7 +50,6 @@ class Controller_Admin_Bills extends Admincontroller {
 			$post->filter('trim');
 			$post_array = $post->as_array();
 
-
 			if (isset($post_array['add_item']))
 			{
 				$_SESSION['bills']['items'][(count($_SESSION['bills']['items']) + 1).'item'] = count($_SESSION['bills']['items']) + 1;
@@ -63,19 +62,26 @@ class Controller_Admin_Bills extends Admincontroller {
 				$vat_sum = 0;
 				foreach ($_SESSION['bills']['items'] as $item_nr)
 				{
+					$qty = (float)$post->get('qty_item_'.$item_nr);
+					if ($qty == 0) $qty = 1;
+
+					$vat = (float)$post->get('vat_item_'.$item_nr);
+					if ($vat == 0) $vat = 1.25;
+
 					$item = array(
 						'artnr'         => $post->get('artnr_item_'.$item_nr),
 						'spec'          => $post->get('spec_item_'.$item_nr),
 						'price'         => (float)$post->get('price_item_'.$item_nr),
-						'qty'           => (float)$post->get('qty_item_'.$item_nr),
+						'vat'           => $vat,
+						'qty'           => $qty,
 						'delivery_date' => date('Y-m-d', time()),
 					);
 
 					if ($item != array('artnr'=>'','spec'=>'','price'=>0,'qty'=>0,'delivery_date'=>date('Y-m-d',time())))
 					{
 						$items[]  = $item;
-						$sum     += ($item['qty'] * $item['price'] * 1.25);
-						$vat_sum += ($item['qty'] * $item['price'] * 0.25);
+						$sum     += ($item['qty'] * $item['price'] * $item['vat']);
+						$vat_sum += ($item['qty'] * $item['price'] * ($item['vat'] - 1));
 					}
 				}
 
@@ -132,6 +138,5 @@ class Controller_Admin_Bills extends Admincontroller {
 		$bill->pay($pay_date);
 		$this->redirect();
 	}
-
 
 }

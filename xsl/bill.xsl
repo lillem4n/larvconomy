@@ -4,8 +4,8 @@
 	<xsl:output method="html" encoding="utf-8" />
 
 	<xsl:decimal-format
-   decimal-separator=','
-   grouping-separator='&#160;'
+		decimal-separator=','
+		grouping-separator='&#160;'
 	/>
 
 	<xsl:template match="/">
@@ -111,6 +111,7 @@
 						<th class="qty">Antal</th>
 						<th class="single_price">Á Pris</th>
 						<th class="price">Pris</th>
+						<th class="vat">Moms</th>
 					</tr>
 
 					<xsl:for-each select="/root/content/bill/items/item">
@@ -148,6 +149,12 @@
 								</xsl:if>
 								<xsl:value-of select="format-number(number(qty) * number(price), '#&#160;###,00')" />
 							</td>
+							<td class="price">
+								<xsl:if test="position() = count(/root/content/bill/items/item)">
+									<xsl:attribute name="class">vat last</xsl:attribute>
+								</xsl:if>
+								<xsl:value-of select="format-number(number(qty) * number(price) * (number(vat) - 1), '#&#160;###,00')" />
+							</td>
 						</tr>
 					</xsl:for-each>
 
@@ -159,7 +166,7 @@
 						</td>
 					</tr>
 					<tr class="bottom">
-						<td colspan="2" class="vat">Moms (25%)</td>
+						<td colspan="2" class="vat">Moms</td>
 						<td class="vat_value">
 							<xsl:call-template name="vat" />
 						</td>
@@ -266,13 +273,13 @@
 
 				<xsl:call-template name="vat">
 					<xsl:with-param name="position" select="$position + 1" />
-					<xsl:with-param name="sum"      select="$sum + number(/root/content/bill/items/item[$position]/qty) * number(/root/content/bill/items/item[$position]/price)"/>
+					<xsl:with-param name="sum"      select="$sum + number(/root/content/bill/items/item[$position]/qty) * number(/root/content/bill/items/item[$position]/price) * (number(/root/content/bill/items/item[$position]/vat) - 1)"/>
 				</xsl:call-template>
 
 			</xsl:when>
 
 			<xsl:otherwise>
-				<xsl:value-of select="format-number($sum * 0.25, '#&#160;###,00')" />
+				<xsl:value-of select="format-number($sum, '#&#160;###,00')" />
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
@@ -286,13 +293,13 @@
 
 				<xsl:call-template name="tot">
 					<xsl:with-param name="position" select="$position + 1" />
-					<xsl:with-param name="sum"      select="$sum + number(/root/content/bill/items/item[$position]/qty) * number(/root/content/bill/items/item[$position]/price)"/>
+					<xsl:with-param name="sum"      select="$sum + number(/root/content/bill/items/item[$position]/qty) * number(/root/content/bill/items/item[$position]/price) * number(/root/content/bill/items/item[$position]/vat)"/>
 				</xsl:call-template>
 
 			</xsl:when>
 
 			<xsl:otherwise>
-				<xsl:value-of select="format-number($sum * 1.25, '#&#160;###,00')" />
+				<xsl:value-of select="format-number($sum, '#&#160;###,00')" />
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
