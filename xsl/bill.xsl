@@ -84,9 +84,9 @@
 					<tr><td colspan="7" class="hclearer"></td></tr>
 
 					<tr>
-						<th>Er referens</th>
-						<td class="vclearer"></td>
 						<th>Vår referens</th>
+						<td class="vclearer"></td>
+						<th>Er referens</th>
 						<td class="vclearer"></td>
 						<th>Betalningsvillkor</th>
 						<td class="vclearer"></td>

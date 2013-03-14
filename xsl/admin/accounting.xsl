@@ -71,7 +71,9 @@
 				</tr>
 			</tfoot>
 			<tbody>
-				<xsl:apply-templates select="accounting/entry[1]" />
+				<xsl:apply-templates select="accounting/entry[1]">
+					<xsl:sort select="transfer_date" order="asc" />
+				</xsl:apply-templates>
 			</tbody>
 		</table>
   </xsl:template>
