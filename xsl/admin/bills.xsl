@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-  <xsl:include href="tpl.default.xsl" />
+	<xsl:include href="tpl.default.xsl" />
 
 	<xsl:template name="tabs">
 		<ul class="tabs">
@@ -25,23 +25,23 @@
 	</xsl:template>
 
 
-  <xsl:template match="/">
-  	<xsl:if test="/root/content[../meta/controller = 'bills' and ../meta/action = 'index']">
-		  <xsl:call-template name="template">
-		  	<xsl:with-param name="title" select="'Admin - Bills'" />
-		  	<xsl:with-param name="h1" select="'Bills'" />
-		  </xsl:call-template>
-  	</xsl:if>
-  	<xsl:if test="/root/content[../meta/controller = 'bills' and ../meta/action = 'bill']">
-		  <xsl:call-template name="template">
-		  	<xsl:with-param name="title" select="'Admin - Bills'" />
-		  	<xsl:with-param name="h1" select="'New bill'" />
-		  </xsl:call-template>
-  	</xsl:if>
-  </xsl:template>
+	<xsl:template match="/">
+		<xsl:if test="/root/content[../meta/controller = 'bills' and ../meta/action = 'index']">
+			<xsl:call-template name="template">
+				<xsl:with-param name="title" select="'Admin - Bills'" />
+				<xsl:with-param name="h1" select="'Bills'" />
+			</xsl:call-template>
+		</xsl:if>
+		<xsl:if test="/root/content[../meta/controller = 'bills' and ../meta/action = 'bill']">
+			<xsl:call-template name="template">
+				<xsl:with-param name="title" select="'Admin - Bills'" />
+				<xsl:with-param name="h1" select="'New bill'" />
+			</xsl:call-template>
+		</xsl:if>
+	</xsl:template>
 
 	<!-- List bills -->
-  <xsl:template match="content[../meta/controller = 'bills' and ../meta/action = 'index']">
+	<xsl:template match="content[../meta/controller = 'bills' and ../meta/action = 'index']">
 		<table>
 			<thead>
 				<tr>
@@ -84,10 +84,10 @@
 				</xsl:for-each>
 			</tbody>
 		</table>
-  </xsl:template>
+	</xsl:template>
 
 	<!-- New bill -->
-  <xsl:template match="content[../meta/controller = 'bills' and ../meta/action = 'bill']">
+	<xsl:template match="content[../meta/controller = 'bills' and ../meta/action = 'bill']">
 		<form method="post" action="bills/bill">
 
 			<label for="add_field">
@@ -163,6 +163,6 @@
 			</xsl:call-template>
 
 		</form>
-  </xsl:template>
+	</xsl:template>
 
 </xsl:stylesheet>
