@@ -8,7 +8,7 @@ class Model_Transactions extends Model
 		parent::__construct();
 	}
 
-	public static function get($search = NULL, $order_by = 'accounting_date', $where = NULL)
+	public static function get($search = NULL, $order_by = 'accounting_date', $where = NULL, $format_for_XML = FALSE)
 	{
 		$pdo = Kohana_pdo::instance();
 
@@ -48,7 +48,21 @@ class Model_Transactions extends Model
 			ORDER BY '.$order_by;
 // ORDER BY NEEDS TO BE SECURED!!!!!0101=!11111ett
 
-		return $pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
+		$transactions = array();
+		foreach ($pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC) as $transaction)
+		{
+			foreach (glob(APPPATH.'user_content/vouchers/'.$transaction['id'].'/*') as $nr => $voucher)
+			{
+				if ($format_for_XML)
+					$transaction['vouchers'][$nr.'voucher'] = pathinfo($voucher, PATHINFO_BASENAME);
+				else
+					$transaction['vouchers'][]              = pathinfo($voucher, PATHINFO_BASENAME);
+			}
+
+			$transactions[] = $transaction;
+		}
+
+		return $transactions;
 	}
 
 }

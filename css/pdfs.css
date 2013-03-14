@@ -45,7 +45,7 @@ table.box_table tr.column_decider td {height: 1px;}
 
 table.box_table td
 {
-	border:                     1px solid #f2a201;
+	border:                     1px solid #a2a2a2;
 	border-top:                 none;
 	border-bottom-left-radius:  5px;
 	border-bottom-right-radius: 5px;
@@ -73,9 +73,9 @@ table.box_table td.vclearer
 
 table.box_table th
 {
-	border:                     1px solid #f2a201;
+	border:                     1px solid #a2a2a2;
 	border-bottom:              none;
-	background-color:           #fcc200;
+	background-color:           #c2c2c2;
 	font-weight:                normal;
 	padding:                    2px;
 	border-top-left-radius:     5px;
@@ -109,9 +109,9 @@ table.salary
 
 	table.salary th
 	{
-		border:           1px solid #F2A201;
+		border:           1px solid #a2a2a2;
 		border-bottom:    none;
-		background-color: #fcc200;
+		background-color: #c2c2c2;
 		font-weight:      normal;
 		padding:          5px;
 		width:            200px;
@@ -140,22 +140,22 @@ table.salary
 
 		table.salary td.thingie
 		{
-			border-left:      1px solid #F2A201;
+			border-left:      1px solid #a2a2a2;
 			padding-left:     20px;
 			text-align:       left;
 		}
 
 		table.salary td.numbers
 		{
-			border-right:     1px solid #F2A201;
+			border-right:     1px solid #a2a2a2;
 			padding-right:    20px;
 			text-align:       right;
 		}
 
 	table.salary tr.last td
 	{
-		border-bottom:    1px solid #F2A201;
-		border-top:       1px solid #F2A201;
+		border-bottom:    1px solid #a2a2a2;
+		border-top:       1px solid #a2a2a2;
 	}
 
 		table.salary tr.last td strong
@@ -189,26 +189,26 @@ table.items
 	table.items tr.bottom td.tot_value
 	{
 		font-weight:      normal;
-		border-right:     1px solid #f2a201;
+		border-right:     1px solid #a2a2a2;
 	}
 
 	table.items tr.bottom td.tot_ex_vat,
 	table.items tr.bottom td.vat,
 	table.items tr.bottom td.tot
 	{
-		border-left:     1px solid #f2a201;
+		border-left:     1px solid #a2a2a2;
 	}
 
 	table.items tr.bottom td.tot
 	{
-		border-bottom:   1px solid #f2a201;
+		border-bottom:   1px solid #a2a2a2;
 		border-bottom-left-radius: 5px;
 		font-weight:     bold;
 	}
 
 	table.items tr.bottom td.tot_value
 	{
-		border-bottom:   1px solid #f2a201;
+		border-bottom:   1px solid #a2a2a2;
 		border-bottom-right-radius: 5px;
 		font-weight:     bold;
 	}
@@ -229,21 +229,21 @@ table.items
 
 	table.items tr.odd td
 	{
-		background-color: #fef3cc;
+		background-color: #eee;
 	}
 
 	table.items th
 	{
-		background-color: #fcc200;
+		background-color: #c2c2c2;
 		font-weight:      normal;
 		padding:          2px;
-		border-top:       1px solid #f2a201;
-		border-bottom:    1px solid #f2a201;
+		border-top:       1px solid #a2a2a2;
+		border-bottom:    1px solid #a2a2a2;
 	}
 
 		table.items th.artnr
 		{
-			border-left:      1px solid #f2a201;
+			border-left:      1px solid #a2a2a2;
 			border-top-left-radius: 5px;
 			width:            98px;
 		}
@@ -265,27 +265,27 @@ table.items
 
 		table.items th.price
 		{
-			border-right:     1px solid #f2a201;
+			border-right:     1px solid #a2a2a2;
 			border-top-right-radius: 5px;
 			width:            83px;
 		}
 
 	table.items td
 	{
-		background-color: #fceccc;
+		background-color: #dbdbdb;
 		font-weight:      normal;
 		padding:          2px 12px 2px 12px;
 	}
 
 		table.items td.last
 		{
-			border-bottom:    1px solid #f2a201;
+			border-bottom:    1px solid #a2a2a2;
 		}
 
 		table.items td.artnr
 		{
-			border-left:      1px solid #f2a201;
-			border-right:     1px solid #f2a201;
+			border-left:      1px solid #a2a2a2;
+			border-right:     1px solid #a2a2a2;
 		}
 
 			table.items td.artnr.last
@@ -295,20 +295,20 @@ table.items
 
 		table.items td.qty
 		{
-			border-right:     1px solid #f2a201;
-			border-left:      1px solid #f2a201;
+			border-right:     1px solid #a2a2a2;
+			border-left:      1px solid #a2a2a2;
 			text-align:       right;
 		}
 
 		table.items td.single_price
 		{
-			border-right:     1px solid #f2a201;
+			border-right:     1px solid #a2a2a2;
 			text-align:       right;
 		}
 
 		table.items td.price
 		{
-			border-right:     1px solid #f2a201;
+			border-right:     1px solid #a2a2a2;
 			text-align:       right;
 		}
 /** End of Items table **/
