@@ -148,6 +148,11 @@
 					<xsl:with-param name="label" select="'Quantity:'" />
 				</xsl:call-template>
 
+				<xsl:call-template name="form_line">
+					<xsl:with-param name="id" select="concat('vat_item_',.)" />
+					<xsl:with-param name="label" select="'VAT:'" />
+				</xsl:call-template>
+
 				<p>---</p>
 			</xsl:for-each>
 

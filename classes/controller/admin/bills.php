@@ -53,6 +53,8 @@ class Controller_Admin_Bills extends Admincontroller {
 			if (isset($post_array['add_item']))
 			{
 				$_SESSION['bills']['items'][(count($_SESSION['bills']['items']) + 1).'item'] = count($_SESSION['bills']['items']) + 1;
+				$post_array['qty_item_'.count($_SESSION['bills']['items'])] = 1;
+				$post_array['vat_item_'.count($_SESSION['bills']['items'])] = 1.25;
 				$this->set_formdata($post_array);
 			}
 			else
@@ -122,7 +124,11 @@ class Controller_Admin_Bills extends Admincontroller {
 		}
 		else
 		{
-			$this->set_formdata(array('due_date' => date('Y-m-d', time() + 20*24*60*60)));
+			$this->set_formdata(array(
+				'due_date'   => date('Y-m-d', time() + 20*24*60*60),
+				'qty_item_1' => 1,
+				'vat_item_1' => 1.25,
+			));
 		}
 
 		xml::to_XML($_SESSION['bills'], $this->xml_content);
