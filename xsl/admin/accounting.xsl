@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-  <xsl:include href="tpl.default.xsl" />
+	<xsl:include href="tpl.default.xsl" />
 
 	<xsl:template name="tabs">
 		<ul class="tabs">
@@ -25,41 +25,48 @@
 	</xsl:template>
 
 
-  <xsl:template match="/">
-  	<xsl:if test="/root/content[../meta/action = 'index']">
-		  <xsl:call-template name="template">
-		  	<xsl:with-param name="title" select="'Admin - Accounting'" />
-		  	<xsl:with-param name="h1" select="'Accounting'" />
-		  </xsl:call-template>
-  	</xsl:if>
-  	<xsl:if test="/root/content[../meta/action = 'entry' and not(../meta/url_params/id)]">
-		  <xsl:call-template name="template">
-		  	<xsl:with-param name="title" select="'Admin - New entry'" />
-		  	<xsl:with-param name="h1" select="'New entry'" />
-		  </xsl:call-template>
-  	</xsl:if>
-  	<xsl:if test="/root/content[../meta/action = 'entry' and ../meta/url_params/id]">
-		  <xsl:call-template name="template">
-		  	<xsl:with-param name="title" select="'Admin - Edit entry'" />
-		  	<xsl:with-param name="h1" select="'Edit entry'" />
-		  </xsl:call-template>
-  	</xsl:if>
-  </xsl:template>
+	<xsl:template match="/">
+		<xsl:if test="/root/content[../meta/action = 'index']">
+			<xsl:call-template name="template">
+				<xsl:with-param name="title" select="'Admin - Accounting'" />
+				<xsl:with-param name="h1" select="'Accounting'" />
+			</xsl:call-template>
+		</xsl:if>
+		<xsl:if test="/root/content[../meta/action = 'entry' and not(../meta/url_params/id)]">
+			<xsl:call-template name="template">
+				<xsl:with-param name="title" select="'Admin - New entry'" />
+				<xsl:with-param name="h1" select="'New entry'" />
+			</xsl:call-template>
+		</xsl:if>
+		<xsl:if test="/root/content[../meta/action = 'entry' and ../meta/url_params/id]">
+			<xsl:call-template name="template">
+				<xsl:with-param name="title" select="'Admin - Edit entry'" />
+				<xsl:with-param name="h1" select="'Edit entry'" />
+			</xsl:call-template>
+		</xsl:if>
+	</xsl:template>
 
 	<!-- List entries -->
-  <xsl:template match="content[../meta/action = 'index']">
+	<xsl:template match="content[../meta/action = 'index']">
+		<div style="width: 300px;">
+			<form method="get" action="accounting/dlvouchers">
+				<p>From date: <input type="text" name="from_date" placeholder="YYYY-MM-DD" /></p>
+				<p>To date: <input type="text" name="to_date" placeholder="YYYY-MM-DD" /></p>
+				<p><button style="float: right;" type="submit">Download vouchers</button><br /></p>
+			</form>
+		</div>
 		<table>
 			<thead>
 				<tr>
-					<th class="medium_row">Accounting date</th>
-					<th class="medium_row">Transfer date</th>
-					<th>Journal ID</th>
+					<th class="medium_row" style="white-space: nowrap;">Accounting date</th>
+					<th class="medium_row" style="white-space: nowrap;">Transfer date</th>
+					<!--th>Journal ID</th-->
 					<th>Description</th>
 					<th class="medium_row right">Sum</th>
 					<th class="medium_row right">VAT</th>
 					<th class="medium_row right">Balance</th>
 					<th>Employee</th>
-					<th class="medium_row">Action</th>
+					<th class="medium_row" style="white-space: nowrap;">Action</th>
 					<th>Vouchers</th>
 				</tr>
 			</thead>
@@ -73,24 +80,24 @@
 			</tfoot>
 			<tbody>
 				<xsl:apply-templates select="accounting/entry[1]">
-					<xsl:sort select="transfer_date" order="asc" />
+					<xsl:sort select="transfer_date" />
 				</xsl:apply-templates>
 			</tbody>
 		</table>
-  </xsl:template>
+	</xsl:template>
 
 	<xsl:template match="entry">
 		<xsl:param name="balance" select="0" />
 		<xsl:param name="odd_or_even" select="'odd'" />
 
 		<tr class="{$odd_or_even}">
-			<td><xsl:value-of select="accounting_date" /></td>
-			<td><xsl:value-of select="transfer_date" /></td>
-			<td><xsl:value-of select="journal_id" /></td>
+			<td style="white-space: nowrap;"><xsl:value-of select="accounting_date" /></td>
+			<td style="white-space: nowrap;"><xsl:value-of select="transfer_date" /></td>
+			<!--td><xsl:value-of select="journal_id" /></td-->
 			<td><xsl:value-of select="description" /></td>
-			<td class="right"><xsl:value-of select="format-number(number(sum), '#,##0.00')" /></td>
-			<td class="right"><xsl:value-of select="format-number(number(vat), '#,##0.00')" /></td>
-			<td class="right"><xsl:value-of select="format-number(number($balance + sum), '#,##0.00')" /></td>
+			<td style="white-space: nowrap;" class="right"><xsl:value-of select="format-number(number(sum), '#,##0.00')" /></td>
+			<td style="white-space: nowrap;" class="right"><xsl:value-of select="format-number(number(vat), '#,##0.00')" /></td>
+			<td style="white-space: nowrap;" class="right"><xsl:value-of select="format-number(number($balance + sum), '#,##0.00')" /></td>
 			<td><xsl:value-of select="employee_firstname" /><xsl:text> </xsl:text><xsl:value-of select="employee_lastname" /></td>
 			<td>[<a href="accounting/entry?id={@id}">Edit</a>]</td>
 			<td>
@@ -119,7 +126,7 @@
 	</xsl:template>
 
 	<!-- New/edit entry -->
-  <xsl:template match="content[../meta/action = 'entry']">
+	<xsl:template match="content[../meta/action = 'entry']">
 		<form method="post" action="accounting/entry" enctype="multipart/form-data">
 			<xsl:if test="../meta/url_params/id">
 				<xsl:attribute name="action">accounting/entry?id=<xsl:value-of select="../meta/url_params/id" /></xsl:attribute>
@@ -197,6 +204,6 @@
 			</xsl:if>
 
 		</form>
-  </xsl:template>
+	</xsl:template>
 
 </xsl:stylesheet>
