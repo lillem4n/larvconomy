@@ -50,24 +50,19 @@ class Controller_Admin_Wages extends Admincontroller {
 			$this->set_formdata(array('period'=>$_GET['period']));
 		// End of period-stuff
 
-
 		if (count($_POST))
 		{
 			// Data submitted
 			$post = new Validation($_POST);
 			$post->filter('trim');
 
-			$post_array        = $post->as_array();
+			$post_array = $post->as_array();
 			foreach (array_keys($post_array) as $key)
-			{
 				if (substr($key, 0, 13) == 'submit_button')
-				{
 					$employee_id = (int) substr($key, 14);
-				}
-			}
 
 			$transaction_data = array(
-				'accounting_date' => date('Y-m-d', time()),
+				'accounting_date' => date('Y-m-25', strtotime($_GET['period'])),
 				'transfer_date'   => date('Y-m-d', time()),
 				'description'     => 'Social fees period '.$_GET['period'],
 				'journal_id'      => NULL,
@@ -141,7 +136,6 @@ class Controller_Admin_Wages extends Admincontroller {
 
 	public function action_payout()
 	{
-
 		// Set employees node
 		$employees_node       = $this->xml_content->appendChild($this->dom->createElement('employees'));
 		$employees            = array();
