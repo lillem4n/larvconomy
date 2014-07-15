@@ -16,6 +16,65 @@ class Controller_Admin_Accounting extends Admincontroller
 		xml::to_XML(Transactions::get(NULL, 'IF(transfer_date = 0,1,0),transfer_date;', NULL, TRUE), $accounting_node, 'entry', 'id');
 	}
 
+	public function action_dlvouchers()
+	{
+		set_time_limit(0);
+		$files = array();
+
+		/** /
+		if     (date('m') < 4)  $quarter = 1;
+		elseif (date('m') < 7)  $quarter = 2;
+		elseif (date('m') < 10) $quarter = 3;
+		else                    $quarter = 4;
+
+		if ($quarter == 1)      $year = intval(date('Y') - 1);
+		else                    $year = intval(date('Y'));
+
+		$where = 'YEAR(accounting_date) = '.$year.' AND MONTH(accounting_date) BETWEEN ';
+
+		if     ($quarter == 1) $where .= '10 AND 12';
+		elseif ($quarter == 2) $where .= '1 AND 3';
+		elseif ($quarter == 3) $where .= '4 AND 6';
+		elseif ($quarter == 4) $where .= '7 AND 9';
+		/**/
+
+		if ( ! isset($_GET['from_date'])) $_GET['from_date'] = '1970-01-01';
+		if ( ! isset($_GET['to_date']))   $_GET['to_date']   = date('Y-m-d');
+
+		$from_date = date('Y-m-d', strtotime($_GET['from_date']));
+		$to_date   = date('Y-m-d', strtotime($_GET['to_date']));
+
+		$where = 'transfer_date >= \''.$from_date.'\' AND transfer_date <= \''.$to_date.'\'';
+
+		foreach (Transactions::get(NULL, 'IF(transfer_date = 0,1,0),transfer_date;', $where, TRUE) as $transaction)
+			if ( ! empty($transaction['vouchers']))
+				foreach ($transaction['vouchers'] as $voucher_file)
+					$files[date('Y-m-d', strtotime($transaction['transfer_date']))][] = APPPATH.'user_content/vouchers/'.$transaction['id'].'/'.$voucher_file;
+
+		if (count($files))
+		{
+			$zipname = APPPATH.'user_content/'.$from_date.'_-_'.$to_date.'_vouchers.zip';
+			$zip     = new ZipArchive;
+			if ($zip->open($zipname, ZIPARCHIVE::CREATE | ZIPARCHIVE::OVERWRITE) === TRUE)
+			{
+				foreach ($files as $date => $files)
+					foreach ($files as $file)
+						if (file_exists($file))
+							$zip->addFile($file, $date.' - '.pathinfo($file, PATHINFO_BASENAME));
+
+				$zip->close();
+
+				header('Content-Type: application/zip');
+				header('Content-disposition: attachment; filename='.pathinfo($zipname, PATHINFO_BASENAME));
+				header('Content-Length: '.filesize($zipname));
+				echo file_get_contents($zipname);
+				unlink($zipname);
+				die();
+			} else die('error opening ziparchive');
+		}
+		else die('no vouchers found');
+	}
+
 	public function action_entry()
 	{
 		// Set employees node
