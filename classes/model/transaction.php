@@ -34,6 +34,8 @@ class Model_Transaction extends Model
 	 *                        'vat'             => amount of money, 0 or above  OPTIONAL
 	 *                        'sum'             => amount of money, above 0
 	 *                        'employee_id'     => int or NULL                  OPTIONAL
+	 *                        'cash_position'   => str or NULL                  OPTIONAL
+	 *                        'account'         => int or NULL                  OPTIONAL
 	 *                    )
 	 * @param arr $voucher - from a file form field
 	 * @return int
@@ -45,9 +47,14 @@ class Model_Transaction extends Model
 		if ( ! isset($data['journal_id']))      $data['journal_id']      = NULL;
 		if ( ! isset($data['vat']))             $data['vat']             = 0;
 		if ( ! isset($data['employee_id']))     $data['employee_id']     = NULL;
+		if ( ! isset($data['cash_position']))   $data['cash_position']   = '';
+		if ( ! isset($data['account']))         $data['account']         = NULL;
 
 		if (self::$prepared_insert == NULL)
-			self::$prepared_insert = $this->pdo->prepare('INSERT INTO transactions (accounting_date, transfer_date, description, journal_id, vat, sum, employee_id) VALUES(?,?,?,?,?,?,?)');
+		{
+			$sql = 'INSERT INTO transactions (accounting_date, transfer_date, description, journal_id, vat, sum, employee_id, cash_position, account) VALUES(?,?,?,?,?,?,?,?,?)';
+			self::$prepared_insert = $this->pdo->prepare($sql);
+		}
 
 		self::$prepared_insert->execute(array(
 			$data['accounting_date'],
@@ -56,7 +63,9 @@ class Model_Transaction extends Model
 			$data['journal_id'],
 			$data['vat'],
 			$data['sum'],
-			$data['employee_id']
+			$data['employee_id'],
+			$data['cash_position'],
+			$data['account']
 		));
 
 		return $this->pdo->lastInsertId();

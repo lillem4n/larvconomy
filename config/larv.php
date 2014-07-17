@@ -2,6 +2,7 @@
 
 return array
 (
+ /*
 	'soc_fee_levels' => array(
 		array(
 			'start_age'  => 0,
@@ -18,7 +19,7 @@ return array
 			'end_age'    => 73,
 			'level'      => 10.21,
 		),
-	),
+	),*/
 	'email' => array(
 		'from'         => 'info@larvit.se',
 		'from_name'    => 'Larv IT AB',

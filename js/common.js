@@ -4,10 +4,13 @@ $(document).ready(function() {
 	var currentTime = new Date()
 	var year        = currentTime.getFullYear();
 	var month       = currentTime.getMonth() + 1;
-	if (month.toString().length == 1) month = '0'+month;
-	var day         = currentTime.getDate();
-	if (day.toString().length == 1) day = '0'+day;
+  var day         = currentTime.getDate();
 
+	if (month.toString().length == 1)
+    month = '0'+month;
+
+	if (day.toString().length == 1)
+    day = '0'+day;
 
 	////////////////////////////
 	// Calculations for wages //

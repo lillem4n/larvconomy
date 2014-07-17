@@ -24,7 +24,6 @@
 		</ul>
 	</xsl:template>
 
-
 	<xsl:template match="/">
 		<xsl:if test="/root/content[../meta/action = 'index']">
 			<xsl:call-template name="template">
@@ -49,17 +48,37 @@
 	<!-- List entries -->
 	<xsl:template match="content[../meta/action = 'index']">
 		<div style="width: 300px;">
-			<form method="get" action="accounting/dlvouchers">
-				<p>From date: <input type="text" name="from_date" placeholder="YYYY-MM-DD" /></p>
-				<p>To date: <input type="text" name="to_date" placeholder="YYYY-MM-DD" /></p>
-				<p><button style="float: right;" type="submit">Download vouchers</button><br /></p>
+			<form method="get">
+				<p>From date: <input type="text" name="from_date" placeholder="YYYY-MM-DD" value="{/root/meta/url_params/from_date}" /></p>
+				<p>To date: <input type="text" name="to_date" placeholder="YYYY-MM-DD" value="{/root/meta/url_params/to_date}" /></p>
+				<p>
+					<xsl:text>Cash position: </xsl:text>
+					<select name="cash_position">
+						<xsl:for-each select="/root/content/cash_positions/cash_position">
+							<option value="{.}">
+								<xsl:if test=". = /root/meta/url_params/cash_position">
+									<xsl:attribute name="selected">selected</xsl:attribute>
+								</xsl:if>
+								<xsl:value-of select="." />
+							</option>
+						</xsl:for-each>
+					</select>
+				</p>
+				<p>
+					<button style="float: right;" type="submit">Show</button>
+					<button style="float: right;" type="submit" name="downloadvouchers">Download vouchers</button>
+				</p>
 			</form>
 		</div>
 		<table>
 			<thead>
 				<tr>
-					<th class="medium_row" style="white-space: nowrap;">Accounting date</th>
-					<th class="medium_row" style="white-space: nowrap;">Transfer date</th>
+					<th class="medium_row" style="white-space: nowrap;">
+						<a href="/admin/accounting?cash_position={/root/meta/url_params/cash_position}&amp;from_date={/root/meta/url_params/from_date}&amp;to_date={/root/meta/url_params/to_date}&amp;order_by=accounting_date">Accounting date</a>
+					</th>
+					<th class="medium_row" style="white-space: nowrap;">
+						<a href="/admin/accounting?cash_position={/root/meta/url_params/cash_position}&amp;from_date={/root/meta/url_params/from_date}&amp;to_date={/root/meta/url_params/to_date}&amp;order_by=transfer_date">Transfer date</a>
+					</th>
 					<!--th>Journal ID</th-->
 					<th>Description</th>
 					<th class="medium_row right">Sum</th>
@@ -72,10 +91,10 @@
 			</thead>
 			<tfoot>
 				<tr>
-					<th colspan="4"></th>
-					<th class="right"><xsl:value-of select="format-number(number(sum(accounting/entry/sum)), '#,##0.00')" /></th>
-					<th class="right"><xsl:value-of select="format-number(number(sum(accounting/entry/vat)), '#,##0.00')" /></th>
 					<th colspan="3"></th>
+					<th class="right"><xsl:value-of select="format-number(number(balances/balance), '#,##0.00')" /></th>
+					<th class="right"><xsl:value-of select="format-number(number(balances/vat_balance), '#,##0.00')" /></th>
+					<th colspan="4"></th>
 				</tr>
 			</tfoot>
 			<tbody>
@@ -87,7 +106,6 @@
 	</xsl:template>
 
 	<xsl:template match="entry">
-		<xsl:param name="balance" select="0" />
 		<xsl:param name="odd_or_even" select="'odd'" />
 
 		<tr class="{$odd_or_even}">
@@ -97,7 +115,7 @@
 			<td><xsl:value-of select="description" /></td>
 			<td style="white-space: nowrap;" class="right"><xsl:value-of select="format-number(number(sum), '#,##0.00')" /></td>
 			<td style="white-space: nowrap;" class="right"><xsl:value-of select="format-number(number(vat), '#,##0.00')" /></td>
-			<td style="white-space: nowrap;" class="right"><xsl:value-of select="format-number(number($balance + sum), '#,##0.00')" /></td>
+			<td style="white-space: nowrap;" class="right"><xsl:value-of select="format-number(number(balance), '#,##0.00')" /></td>
 			<td><xsl:value-of select="employee_firstname" /><xsl:text> </xsl:text><xsl:value-of select="employee_lastname" /></td>
 			<td>[<a href="accounting/entry?id={@id}">Edit</a>]</td>
 			<td>
@@ -112,13 +130,11 @@
 
 		<xsl:if test="$odd_or_even = 'odd'">
 			<xsl:apply-templates select="following-sibling::entry[1]">
-				<xsl:with-param name="balance" select="$balance + sum" />
 				<xsl:with-param name="odd_or_even" select="'even'" />
 			</xsl:apply-templates>
 		</xsl:if>
 		<xsl:if test="$odd_or_even = 'even'">
 			<xsl:apply-templates select="following-sibling::entry[1]">
-				<xsl:with-param name="balance" select="$balance + sum" />
 				<xsl:with-param name="odd_or_even" select="'odd'" />
 			</xsl:apply-templates>
 		</xsl:if>
@@ -152,6 +168,16 @@
 			<xsl:call-template name="form_line">
 				<xsl:with-param name="id" select="'journal_id'" />
 				<xsl:with-param name="label" select="'Journal ID:'" />
+			</xsl:call-template>
+
+			<xsl:call-template name="form_line">
+				<xsl:with-param name="id" select="'cash_position'" />
+				<xsl:with-param name="label" select="'Cash position:'" />
+			</xsl:call-template>
+
+			<xsl:call-template name="form_line">
+				<xsl:with-param name="id" select="'account'" />
+				<xsl:with-param name="label" select="'Account:'" />
 			</xsl:call-template>
 
 			<xsl:call-template name="form_line">

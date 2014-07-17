@@ -35,7 +35,8 @@ class Model_Transactions extends Model
 
 			$where = substr($where, 0, strlen($where) - 4);
 		}
-		elseif ($where === NULL) $where = '1';
+		elseif ($where === NULL)
+			$where = '1';
 
 		$sql = '
 			SELECT
@@ -45,10 +46,10 @@ class Model_Transactions extends Model
 			FROM transactions
 			LEFT JOIN employees ON employees.id = transactions.employee_id
 			WHERE '.$where.'
-			ORDER BY '.$order_by;
-// ORDER BY NEEDS TO BE SECURED!!!!!0101=!11111ett
+			ORDER BY '.$order_by; // ORDER BY NEEDS TO BE SECURED!!!!!0101=!11111ett
 
 		$transactions = array();
+		$balance      = 0;
 		foreach ($pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC) as $transaction)
 		{
 			foreach (glob(APPPATH.'user_content/vouchers/'.$transaction['id'].'/*') as $nr => $voucher)
@@ -59,10 +60,26 @@ class Model_Transactions extends Model
 					$transaction['vouchers'][]              = pathinfo($voucher, PATHINFO_BASENAME);
 			}
 
+			$balance += $transaction['sum'];
+			$transaction['balance'] = $balance;
+
 			$transactions[] = $transaction;
 		}
 
 		return $transactions;
+	}
+
+	public static function get_cash_positions()
+	{
+		$pdo = Kohana_pdo::instance();
+
+		$sql = 'SELECT DISTINCT cash_position FROM transactions ORDER BY cash_position;';
+
+		$cash_positions = array('All');
+		foreach ($pdo->query($sql) as $row)
+			$cash_positions[] = $row['cash_position'];
+
+		return $cash_positions;
 	}
 
 }
