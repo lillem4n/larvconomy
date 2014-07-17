@@ -96,8 +96,8 @@ class Controller_Admin_Accounting extends Admincontroller
 		if ($_GET['cash_position'] != 'All')
 			$where .= ' AND cash_position = '.$pdo->quote($_GET['cash_position']);
 
-		$transactions    = Transactions::get(NULL, $order_by, $where, TRUE);
-		$balances        = array(
+		$transactions = Transactions::get(NULL, $order_by, $where, TRUE);
+		$balances     = array(
 			'balance'         => 0,
 			'balance_all'     => 0,
 			'vat_balance'     => 0,

@@ -36,4 +36,11 @@ return array(
 		'href'        => 'wages',
 		'position'    => 5,
 	),
+	'stats' => array(
+		'name'        => 'Stats',
+		'@category'   => 'Economy',
+		'description' => 'Stats',
+		'href'        => 'stats',
+		'position'    => 6,
+	),
 );
