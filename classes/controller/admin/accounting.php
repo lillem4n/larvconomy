@@ -21,7 +21,7 @@ class Controller_Admin_Accounting extends Admincontroller
 		$where = '1';
 		$pdo = Kohana_Pdo::instance();
 
-		if (isset($_GET['dlvouchers']))
+		if (isset($_GET['downloadvouchers']))
 		{
 			set_time_limit(0);
 			$files = array();
